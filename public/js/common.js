@@ -18,11 +18,11 @@ function getHeader(data, type) {
 }
 
 function redirectToHome(){
-    window.location.href = "/home.html";
+    window.location.href = "/dashboard.html";
 }
 
 function redirectToLogin(){
-    window.location.href = "/login.html";
+    window.location.href = "/";
 }
 
 function logoutUser(){
