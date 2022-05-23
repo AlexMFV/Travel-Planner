@@ -24,3 +24,8 @@ function redirectToHome(){
 function redirectToLogin(){
     window.location.href = "/login.html";
 }
+
+function logoutUser(){
+    //Clear cookies and/or session the redirectToLogin()
+    redirectToLogin();
+}
