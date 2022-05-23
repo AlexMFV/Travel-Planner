@@ -5,7 +5,7 @@ var con = mysql.createConnection(config);
 
 async function checkUserLogin(user, pass){
     let rows = await callProcedureFirstRow('checkUser', [user, pass]);
-    return rows.result > 0 ? true : false;
+    return (rows != undefined && rows.coduser != undefined) ? true : false;
 }
 
 async function createUser(user, pass){

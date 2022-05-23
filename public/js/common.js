@@ -16,3 +16,11 @@ function getHeader(data, type) {
 
     return options;
 }
+
+function redirectToHome(){
+    window.location.href = "/home.html";
+}
+
+function redirectToLogin(){
+    window.location.href = "/login.html";
+}

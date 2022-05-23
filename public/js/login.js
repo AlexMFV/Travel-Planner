@@ -25,8 +25,7 @@ async function processLogin()
             //let cookieID = uuidv4(); //Create the cookie UUID
 
             //glob.createCookies(cookie, id, cookieID, user, pass);
-            //glob.redirectToHome(history);
-            alert("Login Successful!");
+            redirectToHome(history);
           }
           else {
             alert("Incorrect details, please try again!");

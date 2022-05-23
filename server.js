@@ -29,7 +29,7 @@ app.set('view engine', 'html');
 
 app.get('/', function(req, res){
   //Check if the user is logged in (if the cookie is set) and choose the correct page
-  res.render('index');
+  res.render('login');
 });
 
 /* POST REQUESTS */
@@ -44,17 +44,19 @@ console.log("Server listening on port 8080!");
 /* SERVER METHODS */
 
 async function processLogin(req, res){
-  try{
-      const exists = await db.checkUserLogin(req.body.user, req.body.pass);
+  try {
+    let enc_user = sha256(req.body.user);
+    let enc_pass = sha256(req.body.pass);
+    const exists = await db.checkUserLogin(enc_user, enc_pass);
 
-      //Add the user to the session, to remember sign in
-      //if (exists)
-          //req.session.userId = req.body.usr;
+    //Add the user to the session, to remember sign in
+    //if (exists)
+    //req.session.userId = req.body.usr;
 
-      res.json(exists);
+    res.json(exists);
   }
-  catch(e){
-      error(res, e);
+  catch (e) {
+    error(res, e);
   }
 }
 
