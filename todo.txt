@@ -1,3 +1,4 @@
 - Create Page template (left side bar, with main page on the right)
+
 - Design Home Page
 - Implement Cookie/Session to prevent any user from manipulating the URL to acess the website
