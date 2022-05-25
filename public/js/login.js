@@ -1,6 +1,6 @@
 async function processLogin()
 {
-    var username = document.getElementById("username").value;
+    var username = document.getElementById("username").value.toUpperCase();
     var password = document.getElementById("password").value;
     var remember = document.getElementById("remember").checked;
 
