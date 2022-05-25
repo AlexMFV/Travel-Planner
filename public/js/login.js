@@ -20,7 +20,7 @@ async function processLogin()
           if (data.exists) {
 
             setCookie("UDTLS", data.cookie);
-            redirectToHome(history);
+            redirectToHome();
           }
           else {
             //Change to a modal 👀

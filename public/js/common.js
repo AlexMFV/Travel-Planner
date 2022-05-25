@@ -1,18 +1,15 @@
 //For every page check for cookies on load
-$(function () {
+addEventListener("DOMContentLoaded", async function() {
     let cookie = getCookie("UDTLS"); //Checks for user details in cookie
-    
-    //DEBUG ONLY
-    console.log("from getCookie(UDTLS): " + cookie);
 
     //If a cookie exists then send to server to process
     //Otherwise redirect to login page, if not in login page
-    if (cookie == null && window.location.pathname != "/") {
+    if (cookie == "" && window.location.pathname != "/") {
         redirectToLogin();
     }
     else {
         var data = {
-            cookie: this.cookie
+            cookie: cookie
         };
 
         await fetch('/checkCookie', getHeader(data, ReqType.POST)).then(function (res) {
@@ -28,7 +25,7 @@ $(function () {
                     redirectToHome();
                 }
                 else{
-                    if(!accepted && (window.location.pathname != "/" || window.location.pathname != "/login.html")){
+                    if(!accepted && (window.location.pathname != "/" && window.location.pathname != "/login.html")){
                         redirectToLogin();
                     }
                 }
@@ -54,6 +51,10 @@ function setCookie(cookie, content) {
     document.cookie = cookie + "=" + content + ";";
 }
 
+function deleteCookie(cookie) {
+    document.cookie = cookie + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+}
+
 function getHeader(data, type) {
     const options = {
         method: type,
@@ -75,6 +76,6 @@ function redirectToLogin() {
 }
 
 function logoutUser() {
-    //Clear cookies and/or session the redirectToLogin()
+    deleteCookie("UDTLS");
     redirectToLogin();
 }

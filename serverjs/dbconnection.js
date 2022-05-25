@@ -1,16 +1,19 @@
 const { param } = require('express/lib/request');
 const mysql = require('mysql2');
-var config = require('../config.json')
+var config = require('../config.json');
+const { querylog, log } = require('./logs');
 var con = mysql.createConnection(config);
 
 async function checkUserLogin(user, pass){
     let rows = await callProcedureFirstRow('checkUser', [user, pass]);
+    querylog("checkUser");
     return (rows != undefined && rows.coduser != undefined) ? true : false;
 }
 
 async function createUser(user, pass){
     try {
         let numRows = await callProcedureNonQuery('createUser', [user, pass]);
+        querylog("createUser");
 
         if (numRows == 1)
             return true;
@@ -22,14 +25,43 @@ async function createUser(user, pass){
     }
 }
 
+async function getUserID(user, pass){
+    let row = await callProcedureFirstRow('getUserID', [user, pass]);
+    querylog("getUserID");
+    return (row != undefined && row.coduser != undefined) ? row.coduser : '';
+}
+
 /* COOKIES */
+async function createCookie(coduser) {
+    try {
+        let numRows = await callProcedureNonQuery('createCookie', [coduser]);
+        querylog("createCookie");
+
+        if (numRows == 1)
+            return true;
+        return false;
+
+    }
+    catch (e) {
+        return false;
+    }
+}
+
+async function getCookieUUID(coduser){
+    let row = await callProcedureFirstRow('getCookieUUID', [coduser]);
+    querylog("getCookieUUID");
+    return (row != undefined && row.codcookie != undefined) ? row.codcookie : '';
+}
+
 async function checkCookieExists(userID){
     let rows = await callProcedureFirstRow('checkCookieExists', [userID]);
+    querylog("checkCookieExists");
     return (rows != undefined && rows.codcookie != undefined) ? true : false;
 }
 
 async function deleteExpiredCookies(){
     let rows = await callProcedureNonQuery('deleteExpiredCookies');
+    querylog("deleteExpiredCookies");
 }
 
 //async function createNote(conID, userID, note_id, noteText, noteTitle, noteColor, titleColor,
@@ -186,9 +218,4 @@ function formatQuery(name, parameters){
                         .replace('<parameters>', parameters.join(','));
 }
 
-function formatQuery(name){
-    parameters = parameters.map((param) => `'${param}'`);
-    return ('CALL <procName>();').replace('<procName>', name);
-}
-
-module.exports = { checkUserLogin, createUser }
+module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies, createCookie, getUserID, getCookieUUID }

@@ -4,6 +4,7 @@ const path = require('path');
 const db = require('./serverjs/dbconnection');
 const sha256 = require('js-sha256');
 const { resourceLimits } = require('worker_threads');
+const { log } = require('./serverjs/logs');
 
 //If there is an api key that is needed the template for the packet requests is below
 //as well as the path to the api key
@@ -45,7 +46,6 @@ app.listen(8080);
 console.log("Server listening on port 8080!");
 
 /* SERVER METHODS */
-
 async function processLogin(req, res){
   try {
     let enc_user = sha256(req.body.user);
@@ -56,36 +56,21 @@ async function processLogin(req, res){
     //if (exists)
     //req.session.userId = req.body.usr;
 
-    res.json(exists);
-  }
-  catch (e) {
-    error(res, e);
-  }
-}
+    let userID = "";
+    let cookie = undefined;
 
-async function checkCookie(req, res) {
-  try {
-    const cookieContent = req.body.cookie.split(',');
-    let result = false;
-    let content = null;
+    if(exists){
+      userID = await db.getUserID(enc_user, enc_pass);
+      const cookieCreated = await db.createCookie(userID);
 
-    if (cookieContent != null && cookieContent.length == 4)
-    {
-      let cookieID = cookieContent[0];
-      let username = cookieContent[1];
-      let userID = cookieContent[2];
-      let pass = cookieContent[3];
-
-      exists = await db.checkCookieExists(userID);
-
-      if(!exists)
-        await db.deleteExpiredCookies();
-      else
-        content = cookieID + '-' + username + '-' + userID + '-' + pass;
+      if(cookieCreated)
+        cookie = await db.getCookieUUID(userID);
     }
+    
+    const content = cookie + "_" + enc_user + "_" + userID + "_" + enc_pass;
 
     var data = {
-      exists: result,
+      exists: exists,
       cookie: content
     };
 
@@ -96,6 +81,29 @@ async function checkCookie(req, res) {
   }
 }
 
+async function checkCookie(req, res) {
+  try {    
+    let cookieContent = [];
+    let exists = false;
+
+    if(req.body.cookie != undefined)
+      cookieContent = req.body.cookie.split('_');
+
+    if (cookieContent != undefined && cookieContent.length == 4)
+    {
+      let userID = cookieContent[2];
+      
+      exists = await db.checkCookieExists(userID);
+
+      if(!exists)
+        await db.deleteExpiredCookies();
+    }
+    res.json(exists);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
 
 function error(res, msg) {
   res.sendStatus(500);
