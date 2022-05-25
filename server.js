@@ -3,7 +3,6 @@ const app = express();
 const path = require('path');
 const db = require('./serverjs/dbconnection');
 const sha256 = require('js-sha256');
-const { resourceLimits } = require('worker_threads');
 const { log } = require('./serverjs/logs');
 
 //If there is an api key that is needed the template for the packet requests is below
@@ -66,7 +65,7 @@ async function processLogin(req, res){
       if(cookieCreated)
         cookie = await db.getCookieUUID(userID);
     }
-    
+
     const content = cookie + "_" + enc_user + "_" + userID + "_" + enc_pass;
 
     var data = {
