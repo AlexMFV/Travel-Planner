@@ -22,6 +22,16 @@ async function createUser(user, pass){
     }
 }
 
+/* COOKIES */
+async function checkCookieExists(userID){
+    let rows = await callProcedureFirstRow('checkCookieExists', [userID]);
+    return (rows != undefined && rows.codcookie != undefined) ? true : false;
+}
+
+async function deleteExpiredCookies(){
+    let rows = await callProcedureNonQuery('deleteExpiredCookies');
+}
+
 //async function createNote(conID, userID, note_id, noteText, noteTitle, noteColor, titleColor,
 //    dateCreated, baseFont, baseFontSize, baseFontColor, posX, posY, width, height, isClosed, isLocked){
 //    try {
@@ -174,6 +184,11 @@ function formatQuery(name, parameters){
     return ('CALL <procName>(<parameters>);')
                         .replace('<procName>', name)
                         .replace('<parameters>', parameters.join(','));
+}
+
+function formatQuery(name){
+    parameters = parameters.map((param) => `'${param}'`);
+    return ('CALL <procName>();').replace('<procName>', name);
 }
 
 module.exports = { checkUserLogin, createUser }

@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const db = require('./serverjs/dbconnection');
 const sha256 = require('js-sha256');
+const { resourceLimits } = require('worker_threads');
 
 //If there is an api key that is needed the template for the packet requests is below
 //as well as the path to the api key
@@ -35,6 +36,7 @@ app.get('/', function(req, res){
 
 /* POST REQUESTS */
 app.post('/login', processLogin);
+app.post('/checkCookie', checkCookie);
 
 /* GET REQUESTS */
 //app.get('/api/player/:id', getPlayerData);
@@ -55,6 +57,39 @@ async function processLogin(req, res){
     //req.session.userId = req.body.usr;
 
     res.json(exists);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function checkCookie(req, res) {
+  try {
+    const cookieContent = req.body.cookie.split(',');
+    let result = false;
+    let content = null;
+
+    if (cookieContent != null && cookieContent.length == 4)
+    {
+      let cookieID = cookieContent[0];
+      let username = cookieContent[1];
+      let userID = cookieContent[2];
+      let pass = cookieContent[3];
+
+      exists = await db.checkCookieExists(userID);
+
+      if(!exists)
+        await db.deleteExpiredCookies();
+      else
+        content = cookieID + '-' + username + '-' + userID + '-' + pass;
+    }
+
+    var data = {
+      exists: result,
+      cookie: content
+    };
+
+    res.json(data);
   }
   catch (e) {
     error(res, e);

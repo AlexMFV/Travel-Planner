@@ -6,8 +6,7 @@ async function processLogin()
 
     var data = {
         user: username,
-        pass: password,
-        save: remember
+        pass: password
     };
 
     await fetch('/login', getHeader(data, ReqType.POST)).then(function (res) {
@@ -17,14 +16,10 @@ async function processLogin()
           return;
         }
   
-        res.json().then(function (exists) {
-          if (exists) {
-            //Change this to Modal
-            //const cookie = new Cookies(); //Instantiate the cookie
-            //let id = uuidv4(); //Create UUID for the DB
-            //let cookieID = uuidv4(); //Create the cookie UUID
+        res.json().then(function (data) {
+          if (data.exists) {
 
-            //glob.createCookies(cookie, id, cookieID, user, pass);
+            setCookie("UDTLS", data.cookie);
             redirectToHome(history);
           }
           else {
