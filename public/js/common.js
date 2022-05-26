@@ -83,9 +83,11 @@ function logoutUser() {
 }
 
 function fillUserInfo() {
-    let username = getCookie("UDTLS_USERNAME");
-    let name = getCookie("UDTLS_USER");
+    if (window.location.pathname != "/" && window.location.pathname != "/login.html") {
+        let username = getCookie("UDTLS_USERNAME");
+        let name = getCookie("UDTLS_USER");
 
-    document.getElementById("tvl_username").innerHTML = username;
-    document.getElementById("tvl_name").innerHTML = name;
+        document.getElementById("tvl_username").innerHTML = username;
+        document.getElementById("tvl_name").innerHTML = name;
+    }
 }
