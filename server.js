@@ -49,17 +49,19 @@ async function processLogin(req, res){
   try {
     let enc_user = sha256(req.body.user);
     let enc_pass = sha256(req.body.pass);
-    const exists = await db.checkUserLogin(enc_user, enc_pass);
-
-    //Add the user to the session, to remember sign in
-    //if (exists)
-    //req.session.userId = req.body.usr;
-
     let userID = "";
+    let user = undefined;
     let cookie = undefined;
 
-    if(exists){
+    const exists = await db.checkUserLogin(enc_user, enc_pass);
+
+    if(exists){      
       userID = await db.getUserID(enc_user, enc_pass);
+
+      user = await db.getUserByID(userID);
+
+      registerSessionUserID(req, userID, exists);
+
       const cookieCreated = await db.createCookie(userID);
 
       if(cookieCreated)
@@ -70,7 +72,8 @@ async function processLogin(req, res){
 
     var data = {
       exists: exists,
-      cookie: content
+      cookie: content,
+      user: user
     };
 
     res.json(data);
@@ -102,6 +105,15 @@ async function checkCookie(req, res) {
   catch (e) {
     error(res, e);
   }
+}
+
+function registerSessionUserID(req, userID, exists) {
+  if(exists)
+    req.session.userID = userID;
+}
+
+function getSessionUserID(req) {
+  return req.session.userID;
 }
 
 function error(res, msg) {

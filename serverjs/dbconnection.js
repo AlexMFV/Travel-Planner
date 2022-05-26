@@ -31,6 +31,12 @@ async function getUserID(user, pass){
     return (row != undefined && row.coduser != undefined) ? row.coduser : '';
 }
 
+async function getUserByID(coduser){
+    let row = await callProcedureFirstRow('getUserByID', [coduser]);
+    querylog("getUserByID");
+    return (row != undefined) ? row : null;
+}
+
 /* COOKIES */
 async function createCookie(coduser) {
     try {

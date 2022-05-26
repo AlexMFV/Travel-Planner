@@ -34,6 +34,8 @@ addEventListener("DOMContentLoaded", async function() {
             console.log('Fetch Error: ', err);
         });
     }
+
+    fillUserInfo();
 });
 
 var ReqType = {
@@ -78,4 +80,12 @@ function redirectToLogin() {
 function logoutUser() {
     deleteCookie("UDTLS");
     redirectToLogin();
+}
+
+function fillUserInfo() {
+    let username = getCookie("UDTLS_USERNAME");
+    let name = getCookie("UDTLS_USER");
+
+    document.getElementById("tvl_username").innerHTML = username;
+    document.getElementById("tvl_name").innerHTML = name;
 }
