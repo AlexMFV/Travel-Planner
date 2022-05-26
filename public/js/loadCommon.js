@@ -6,6 +6,8 @@ $(function () {
       $(this).load(file)
     })
 
+    fillUserInfo();
+
     //Set the active page
     //$('#navbar-nav li').removeClass('active');
     //$('#navbar-nav li').addClass('active');

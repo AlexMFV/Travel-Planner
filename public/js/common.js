@@ -36,10 +36,6 @@ addEventListener("DOMContentLoaded", async function() {
     }
 });
 
-$(window).on("load", function() { 
-    fillUserInfo();
-});
-
 var ReqType = {
     GET: "GET",
     POST: "POST",
