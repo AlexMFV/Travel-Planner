@@ -34,7 +34,9 @@ addEventListener("DOMContentLoaded", async function() {
             console.log('Fetch Error: ', err);
         });
     }
+});
 
+$(window).on("load", function() { 
     fillUserInfo();
 });
 
@@ -97,7 +99,15 @@ function fillUserInfo() {
         let username = getCookie("UDTLS_USERNAME");
         let name = getCookie("UDTLS_USER");
 
-        document.getElementById("tvl_username").innerHTML = username;
-        document.getElementById("tvl_name").innerHTML = name;
+        const domUsername = document.getElementById("tvl_username");
+        const domName = document.getElementById("tvl_name");
+
+        if(domUsername != null) {
+            domUsername.innerHTML = username;
+        }
+
+        if(domName != null) {
+            domName.innerHTML = name;
+        }
     }
 }
