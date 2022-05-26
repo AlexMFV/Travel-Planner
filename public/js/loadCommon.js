@@ -29,10 +29,5 @@ function loadUsername(){
   const elemUsername = document.getElementById("tvl_username");
 
   if (elemUsername != null)
-    elemUsername.innerHTML = getName();
-}
-
-function loadThings(){
-  loadName();
-  loadUsername();
+    elemUsername.innerHTML = getUsername();
 }
