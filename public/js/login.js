@@ -21,7 +21,7 @@ async function processLogin()
 
             setCookie("UDTLS", data.cookie);
             setCookie("UDTLS_USER", data.user.first_name + " " + data.user.last_name);
-            setCookie("UDTLS_USERNAME", data.user.username);
+            setCookie("UDTLS_USERNAME", document.getElementById("username").value);
             //setCookie("UDTLS_PIC", data.user.picture);
 
             redirectToHome();
