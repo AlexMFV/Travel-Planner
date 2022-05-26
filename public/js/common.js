@@ -79,6 +79,16 @@ function redirectToLogin() {
 
 function logoutUser() {
     deleteCookie("UDTLS");
+
+    //Request the server with /logout
+    // and delete the session
+    /* req.session.destroy((err) => {
+        if(err) {
+            return console.log(err);
+        }
+        res.redirect('/');
+    }); */
+
     redirectToLogin();
 }
 

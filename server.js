@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const db = require('./serverjs/dbconnection');
 const sha256 = require('js-sha256');
+const session = require('express-session');
 const { log } = require('./serverjs/logs');
 
 //If there is an api key that is needed the template for the packet requests is below
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'js')));
 app.use(express.static(path.join(__dirname, 'bootstrap')));
+app.use(session({secret: 'e767ed82b7415fdbbc3f1b026306d6b50f83e8c788a274bf41983cc775b7cc10',saveUninitialized: true,resave: true}));
 app.use(express.json());
 app.engine('.html', require('ejs').__express);
 //app.set('views', __dirname + '/views');
@@ -108,12 +110,13 @@ async function checkCookie(req, res) {
 }
 
 function registerSessionUserID(req, userID, exists) {
-  if(exists)
+  if(exists && req.session)
     req.session.userID = userID;
 }
 
 function getSessionUserID(req) {
-  return req.session.userID;
+  if(req.session)
+    return req.session.userID;
 }
 
 function error(res, msg) {
