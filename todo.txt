@@ -1,3 +1,4 @@
+- On the home page widgets add a widgets with a countdown to the next 3/5 trips or maybe a list with all trips
 - Design Home Page
 - Use req.session to allow the server and API to access the values of the logged in user
 - Implement the remember me functionality using the button
