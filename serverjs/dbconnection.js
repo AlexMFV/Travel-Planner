@@ -224,4 +224,4 @@ function formatQuery(name, parameters){
                         .replace('<parameters>', parameters.join(','));
 }
 
-module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies, createCookie, getUserID, getCookieUUID }
+module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies, createCookie, getUserID, getCookieUUID, getUserByID }
