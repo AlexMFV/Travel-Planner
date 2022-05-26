@@ -90,20 +90,10 @@ function logoutUser() {
     redirectToLogin();
 }
 
-function fillUserInfo() {
-    if (window.location.pathname != "/" && window.location.pathname != "/login.html") {
-        let username = getCookie("UDTLS_USERNAME");
-        let name = getCookie("UDTLS_USER");
+function getUsername() {
+    return getCookie("UDTLS_USERNAME");
+}
 
-        const domUsername = document.getElementById("tvl_username");
-        const domName = document.getElementById("tvl_name");
-
-        if(domUsername != null) {
-            domUsername.innerHTML = username;
-        }
-
-        if(domName != null) {
-            domName.innerHTML = name;
-        }
-    }
+function getName(){
+    return getCookie("UDTLS_USER");
 }
