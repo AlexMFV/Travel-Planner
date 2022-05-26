@@ -40,5 +40,5 @@ function checkInputs(){
 }
 
 function createTrip(){
-    
+    console.log("Needs to be implemented!");
 }

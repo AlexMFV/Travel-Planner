@@ -97,3 +97,14 @@ function getUsername() {
 function getName(){
     return getCookie("UDTLS_USER");
 }
+
+function showErrorMessage(message) {
+    const alert = "<div id=\"alert1\" class=\"alert alert-danger alert-dismissible\" role=\"alert\">" + message +
+    "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
+
+    document.getElementById("error").innerHTML = alert;
+}
+
+function deleteErrorMessage() {
+    document.getElementById("error").innerHTML = "";
+}
