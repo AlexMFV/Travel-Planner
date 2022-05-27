@@ -5,6 +5,8 @@ const db = require('./serverjs/dbconnection');
 const sha256 = require('js-sha256');
 const session = require('express-session');
 const { log } = require('./serverjs/logs');
+const { Resources } = require('./serverjs/messages');
+var bodyParser = require('body-parser');
 
 //If there is an api key that is needed the template for the packet requests is below
 //as well as the path to the api key
@@ -27,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'js')));
 app.use(express.static(path.join(__dirname, 'bootstrap')));
 app.use(session({secret: 'e767ed82b7415fdbbc3f1b026306d6b50f83e8c788a274bf41983cc775b7cc10',saveUninitialized: true,resave: true}));
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('.html', require('ejs').__express);
 //app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
@@ -39,6 +42,7 @@ app.get('/', function(req, res){
 /* POST REQUESTS */
 app.post('/login', processLogin);
 app.post('/checkCookie', checkCookie);
+app.post('/newTrip', createTrip);
 
 /* GET REQUESTS */
 //app.get('/api/player/:id', getPlayerData);
@@ -109,6 +113,29 @@ async function checkCookie(req, res) {
   }
 }
 
+async function createTrip(req, res) {
+  try {
+    const desc = req.body.desc;
+    const start = req.body.start;
+    const end = req.body.end;
+
+    const exists = await db.checkTripExists(desc);
+
+    if (exists)
+      throw new Error(new Resources().TRIP_ALREADY_EXISTS);
+
+    const result = await db.createTrip(desc, start, end);
+
+    if(result == 0)
+      throw new Error(new Resources().INSERT_ERROR);
+
+    res.json(true);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
 function registerSessionUserID(req, userID, exists) {
   if(exists && req.session)
     req.session.userID = userID;
@@ -119,7 +146,7 @@ function getSessionUserID(req) {
     return req.session.userID;
 }
 
-function error(res, msg) {
-  res.sendStatus(500);
-  console.error(msg);
+function error(res, e) {
+  //console.error(e);
+  res.status(500).json(e.message);
 }

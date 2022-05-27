@@ -40,5 +40,23 @@ function checkInputs(){
 }
 
 function createTrip(){
-    console.log("Needs to be implemented!");
+    const tripDescription = document.getElementById('tripDescription').value;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    $.ajax({
+        type: 'POST',
+        url: '/newTrip',
+        data: {
+            desc: tripDescription,
+            start: startDate,
+            end: endDate
+        },
+        success: function(data) {
+            window.location.href = '/dashboard.html?success=true';
+        },
+        error: function(data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
 }

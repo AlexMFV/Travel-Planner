@@ -34,6 +34,8 @@ addEventListener("DOMContentLoaded", async function() {
             console.log('Fetch Error: ', err);
         });
     }
+
+    checkMessages();
 });
 
 var ReqType = {
@@ -105,6 +107,20 @@ function showErrorMessage(message) {
     document.getElementById("error").innerHTML = alert;
 }
 
+function showSuccessMessage(message) {
+    const alert = "<div id=\"alert1\" class=\"alert alert-success alert-dismissible\" role=\"alert\">" + message +
+    "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
+
+    document.getElementById("error").innerHTML = alert;
+}
+
 function deleteErrorMessage() {
     document.getElementById("error").innerHTML = "";
+}
+
+function checkMessages(){
+    const success = window.location.success;
+    if(success){
+        showSuccessMessage("The record was created successfully!");
+    }
 }
