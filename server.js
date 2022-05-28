@@ -5,8 +5,8 @@ const db = require('./serverjs/dbconnection');
 const sha256 = require('js-sha256');
 const session = require('express-session');
 const { log } = require('./serverjs/logs');
-const { Resources } = require('./serverjs/messages');
 var bodyParser = require('body-parser');
+const { Resources } = require('./serverjs/messages');
 
 //If there is an api key that is needed the template for the packet requests is below
 //as well as the path to the api key
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'js')));
 app.use(express.static(path.join(__dirname, 'bootstrap')));
-app.use(session({secret: 'e767ed82b7415fdbbc3f1b026306d6b50f83e8c788a274bf41983cc775b7cc10',saveUninitialized: true,resave: true}));
+app.use(session({secret: 'e767ed82b7415fdbbc3f1b026306d6b50f83e8c788a274bf41983cc775b7cc10', saveUninitialized: true,resave: true}));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.engine('.html', require('ejs').__express);
@@ -120,14 +120,13 @@ async function createTrip(req, res) {
     const end = req.body.end;
 
     const exists = await db.checkTripExists(desc);
-
     if (exists)
-      throw new Error(new Resources().TRIP_ALREADY_EXISTS);
+      throw new Error(Resources.TRIP_ALREADY_EXISTS);
 
     const result = await db.createTrip(desc, start, end);
 
     if(result == 0)
-      throw new Error(new Resources().INSERT_ERROR);
+      throw new Error(Resources.INSERT_ERROR);
 
     res.json(true);
   }
