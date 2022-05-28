@@ -119,8 +119,14 @@ function deleteErrorMessage() {
 }
 
 function checkMessages(){
-    const success = window.location.success;
+    const success = getSearchParam("success");
     if(success){
         showSuccessMessage("The record was created successfully!");
     }
+}
+
+function getSearchParam(param){
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    return url.searchParams.get(param);
 }
