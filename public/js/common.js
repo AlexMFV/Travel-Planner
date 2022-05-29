@@ -130,3 +130,21 @@ function getSearchParam(param){
     var url = new URL(url_string);
     return url.searchParams.get(param);
 }
+
+async function getAllTrips(){
+    await $.ajax({
+        type: 'GET',
+        url: '/allTrips',
+        data: {},
+        success: function(data) {
+            if(data != null && data != undefined)
+            {
+                glob.trips = JSON.parse(data);
+                console.log("Parse", glob.trips);
+            }
+        },
+        error: function(data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
+}

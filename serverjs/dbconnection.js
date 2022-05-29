@@ -91,6 +91,12 @@ async function createTrip(desc, start, end){
     }
 }
 
+async function getAllTrips(){
+    let rows = await callProcedureRows('getAllTrips', []);
+    querylog("getAllTrips");
+    return rows;
+}
+
 /* STATIC FUNCTIONS */
 
 /**
@@ -134,4 +140,5 @@ function formatQuery(name, parameters){
 }
 
 module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies,
-    createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip }
+    createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
+    getAllTrips }

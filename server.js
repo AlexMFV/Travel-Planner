@@ -45,7 +45,7 @@ app.post('/checkCookie', checkCookie);
 app.post('/newTrip', createTrip);
 
 /* GET REQUESTS */
-//app.get('/api/player/:id', getPlayerData);
+app.get('/allTrips', getAllTrips);
 
 app.listen(8080);
 console.log("Server listening on port 8080!");
@@ -129,6 +129,16 @@ async function createTrip(req, res) {
       throw new Error(Resources.INSERT_ERROR);
 
     res.json(true);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAllTrips(req, res){
+  try {
+    const trips = await db.getAllTrips();
+    res.json(JSON.stringify(trips));
   }
   catch (e) {
     error(res, e);
