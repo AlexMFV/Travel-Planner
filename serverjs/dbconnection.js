@@ -97,6 +97,12 @@ async function getAllTrips(){
     return rows;
 }
 
+async function getAllCountries(){
+    let rows = await callProcedureRows('getAllCountries', []);
+    querylog("getAllCountries");
+    return rows;
+}
+
 /* STATIC FUNCTIONS */
 
 /**
@@ -141,4 +147,4 @@ function formatQuery(name, parameters){
 
 module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies,
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
-    getAllTrips }
+    getAllTrips, getAllCountries }

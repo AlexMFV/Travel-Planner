@@ -1,124 +1,81 @@
+$(function (){
+    const page = window.location.pathname.slice(1).replace('.html', '');
+    let options = undefined;
 
-async function createTripRows(body) {
-    //get All Trips and fill glob.trips
-    await getAllTrips();
-
-    glob.trips.forEach(trip => {
-        const tr = document.createElement('tr'); //Full Row
-        let td = document.createElement('td'); //Column
-
-        //First Column td, i.fab fa-angular fa-lg text-danger me-3, strong = Trip Name
-        const i = document.createElement('i');
-        i.classList.add('fab');
-        i.classList.add('fa-angular');
-        i.classList.add('text-danger');
-        i.classList.add('fa-lg');
-        i.classList.add('me-3');
-
-        const tripName = document.createElement('strong');
-        tripName.innerHTML = trip.trip_name;
-
-        td.appendChild(i)
-        td.appendChild(tripName);
-        tr.appendChild(td);
-
-        //Column 2 td = Start date
-        td = document.createElement('td');
-        td.innerHTML = moment(trip.date_start).format('DD/MM/YYYY');
-        tr.appendChild(td);
-
-        //Column 3 td = End date
-        td = document.createElement('td');
-
-        td.innerHTML = moment(trip.date_end).format('DD/MM/YYYY');
-        tr.appendChild(td);
-
-        let date = Date.now();
-        let today = new Date(date).toISOString();
-
-        //Column 4 td = Time Left (days)
-        td = document.createElement('td');
-        if(trip.date_start > today)
-        {
-            var diff = new Date(trip.date_start).getTime() - new Date(date).getTime();
-            var days = Math.ceil(diff / (1000 * 3600 * 24));
-            td.innerHTML = days + " days";
-        }
-        tr.appendChild(td);
-
-        //Column 5 td = Status
-        td = document.createElement('td');
-        const span = document.createElement('span');
-
-        let badgeType = null;
-        let badgeColor = null;
-
-        span.classList.add("badge");
-
-        if(trip.date_start > today)
-        {
-            badgeType = 'Upcoming';
-            badgeColor = 'bg-label-info';
-        }
-        
-        if(trip.date_start < today && trip.date_end > today)
-        {
-            badgeType = 'Ongoing';
-            badgeColor = 'bg-label-success';
-        }
-
-        if(trip.date_end < today)
-        {
-            badgeType = 'Completed';
-            badgeColor = 'bg-label-primary';
-        }
-
-        span.classList.add(badgeColor);
-        span.innerHTML = badgeType;
-
-        td.appendChild(span);
-        tr.appendChild(td);
-
-        //Column 6 td = Actions
-
-        body.appendChild(tr);
-    });
-
-    return body;
-}
-
-function createColumns(columns){
-    const head = document.createElement('thead');
-    const tr = document.createElement('tr');
-
-    columns.forEach(column => {
-        const th = document.createElement('th');
-        th.innerHTML = column;
-        tr.appendChild(th);
-    });
-
-    head.appendChild(tr);
-    return head;
-}
-
-function createBody(){
-    const body = document.createElement('tbody');
-    body.classList.add('table-border-bottom-0');
-    return body;
-}
-
-async function createTable(columns, tableName){
-    console.log("Loading table trip");
-
-    const table = document.getElementById('listTable');
-    table.appendChild(createColumns(columns));
-
-    let body = createBody();
-
-    switch(tableName){
-        case 'trip': body = await createTripRows(body); break;
-        default: break;
+    switch(page){
+        case 'listtrip': options = tripsTable(); break;
+        case 'countries': options = countriesTable(); break;
+        default: console.log("No table found"); break;
     }
 
-    table.appendChild(body);
+    if(options != undefined)
+        $("#listTable").DataTable(options);
+});
+
+//Table definitions
+function tripsTable() {
+    let date = Date.now();
+    let today = new Date(date).toISOString();
+
+    return {
+        data: glob.trips,
+        columns: [
+            { data: 'trip_name', title: 'Trip Name', render: (data, type, row) => { return '<strong>' + row.trip_name + '</strong>' } },
+            { data: 'date_start', title: 'Start Date', render: function (data, type, row) { return moment(row.date_start).format('DD/MM/YYYY'); } },
+            { data: 'date_end', title: 'End Date', render: function (data, type, row) { return moment(row.date_end).format('DD/MM/YYYY'); } },
+            {
+                data: 'time_left', title: 'Time Left', render: function (data, type, row) {
+
+                    if (row.date_start > today) {
+                        var diff = new Date(row.date_start).getTime() - new Date(date).getTime();
+                        var days = Math.ceil(diff / (1000 * 3600 * 24));
+                        row.time_left = days + " days";
+                    }
+                    else
+                        return '';
+
+                    return row.time_left;
+                }
+            },
+            {
+                data: 'status', title: 'Status', render: function (data, type, row) {
+                    //Do something and return as HTML inside the row tr for the specific td
+                    const span = document.createElement('span');
+                    span.classList.add("badge");
+
+                    if (row.date_start > today) {
+                        row.status = 'Upcoming';
+                        span.classList.add('bg-label-info');
+                    }
+
+                    if (row.date_start < today && row.date_end > today) {
+                        row.status = 'Ongoing';
+                        span.classList.add('bg-label-success');
+                    }
+
+                    if (row.date_end < today) {
+                        row.status = 'Completed';
+                        span.classList.add('bg-label-primary');
+                    }
+
+                    span.innerHTML = row.status;
+                    return span.outerHTML;
+                }
+            },
+        ],
+        "order": 1
+    }
+}
+
+function countriesTable() {
+    return {
+        data: glob.countries,
+        columns: [
+            { data: 'name', title: 'Country Name', render: (data, type, row) => { return '<strong>' + row.name + '</strong>' } },
+            { data: 'currency_name', title: 'Currency Name' },
+            { data: 'currency', title: 'Currency' },
+            { data: 'currency_symbol', title: 'Currency Symbol' },
+        ],
+        "order": 1
+    }
 }

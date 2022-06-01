@@ -131,19 +131,33 @@ function getSearchParam(param){
     return url.searchParams.get(param);
 }
 
-async function getAllTrips(){
+async function getAllTrips() {
     await $.ajax({
         type: 'GET',
         url: '/allTrips',
         data: {},
-        success: function(data) {
-            if(data != null && data != undefined)
-            {
+        success: function (data) {
+            if (data != null && data != undefined) {
                 glob.trips = JSON.parse(data);
-                console.log("Parse", glob.trips);
             }
         },
-        error: function(data) {
+        error: function (data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
+}
+
+async function getAllCountries() {
+    await $.ajax({
+        type: 'GET',
+        url: '/allCountries',
+        data: {},
+        success: function (data) {
+            if (data != null && data != undefined) {
+                glob.countries = JSON.parse(data);
+            }
+        },
+        error: function (data) {
             showErrorMessage(data.responseJSON);
         }
     });

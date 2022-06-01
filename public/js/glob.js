@@ -1,3 +1,4 @@
 var glob = {
-    trips: [{}]
+    trips: [{}],
+    countries: [{}],
 }
