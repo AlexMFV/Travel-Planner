@@ -30,10 +30,6 @@
     <script src="js/common.js"></script>
     <script src="js/table.js"></script>
 
-    <script type="text/javascript">
-      getAllTrips();
-    </script>
-
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./bootstrap/assets/img/favicon/favicon.ico" />
 
@@ -68,7 +64,7 @@
     <script src="./bootstrap/assets/js/config.js"></script>
   </head>
 
-  <body>
+  <body onload="loadTrips();">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">

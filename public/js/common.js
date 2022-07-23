@@ -162,3 +162,19 @@ async function getAllCountries() {
         }
     });
 }
+
+function forceReloadTable(tableId, data){
+    if(data != null && data != undefined)
+        $('#'+tableId).DataTable().clear().rows.add(data).draw();
+}
+
+//Load Data
+async function loadCountries(){
+    await getAllCountries();
+    forceReloadTable("listTable", glob.countries);
+}
+
+async function loadTrips(){
+    await getAllTrips();
+    forceReloadTable("listTable", glob.trips);
+}

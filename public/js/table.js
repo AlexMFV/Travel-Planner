@@ -20,11 +20,11 @@ function tripsTable() {
     return {
         data: glob.trips,
         columns: [
-            { data: 'trip_name', title: 'Trip Name', render: (data, type, row) => { return '<strong>' + row.trip_name + '</strong>' } },
-            { data: 'date_start', title: 'Start Date', render: function (data, type, row) { return moment(row.date_start).format('DD/MM/YYYY'); } },
-            { data: 'date_end', title: 'End Date', render: function (data, type, row) { return moment(row.date_end).format('DD/MM/YYYY'); } },
+            { data: 'trip_name', title: 'Trip Name', "defaultContent": 'No data' ,render: (data, type, row) => { return '<strong>' + row.trip_name + '</strong>' } },
+            { data: 'date_start', title: 'Start Date', "defaultContent": 'No data' , render: function (data, type, row) { return moment(row.date_start).format('DD/MM/YYYY'); } },
+            { data: 'date_end', title: 'End Date', "defaultContent": 'No data' , render: function (data, type, row) { return moment(row.date_end).format('DD/MM/YYYY'); } },
             {
-                data: 'time_left', title: 'Time Left', render: function (data, type, row) {
+                data: 'time_left', title: 'Time Left', "defaultContent": 'No data' , render: function (data, type, row) {
 
                     if (row.date_start > today) {
                         var diff = new Date(row.date_start).getTime() - new Date(date).getTime();
@@ -38,7 +38,7 @@ function tripsTable() {
                 }
             },
             {
-                data: 'status', title: 'Status', render: function (data, type, row) {
+                data: 'status', title: 'Status', "defaultContent": 'No data' , render: function (data, type, row) {
                     //Do something and return as HTML inside the row tr for the specific td
                     const span = document.createElement('span');
                     span.classList.add("badge");
@@ -68,13 +68,16 @@ function tripsTable() {
 }
 
 function countriesTable() {
+    if(glob.countries == undefined || glob.countries == null)
+        countriesTable();
+
     return {
         data: glob.countries,
         columns: [
-            { data: 'name', title: 'Country Name', render: (data, type, row) => { return '<strong>' + row.name + '</strong>' } },
-            { data: 'currency_name', title: 'Currency Name' },
-            { data: 'currency', title: 'Currency' },
-            { data: 'currency_symbol', title: 'Currency Symbol' },
+            { data: 'name', title: 'Country Name', render: (data, type, row) => { return '<strong>' + row.name + '</strong>' }, "defaultContent": 'No data' },
+            { data: 'currency_name', title: 'Currency Name', "defaultContent": 'No data' },
+            { data: 'currency', title: 'Currency', "defaultContent": 'No data' },
+            { data: 'currency_symbol', title: 'Currency Symbol',  "defaultContent": 'No data' },
         ],
         "order": 1
     }
