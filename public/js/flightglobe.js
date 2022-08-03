@@ -126,7 +126,7 @@ function addCity(coords, title) {
     });
 }
 
-function updateMapData() {
+function updateMapData(name1, lat1, long1, name2, lat2, long2) {
     //Reset Line Series
     lineSeries.dispose();
     lineSeries = chart.series.push(am5map.MapLineSeries.new(root, {}));
@@ -157,8 +157,8 @@ function updateMapData() {
     });
 
     //Define the selected countries
-    country1 = addCity({ latitude: 40.5000, longitude: -10.00000000 }, "Portugal2");
-    country2 = addCity({ latitude: 57.00000000, longitude: -20.00000000 }, "United Kingdom2");
+    country1 = addCity({ latitude: lat1, longitude: long1 }, name1);
+    country2 = addCity({ latitude: lat2, longitude: long2 }, name2);
 
     var values = [];
 

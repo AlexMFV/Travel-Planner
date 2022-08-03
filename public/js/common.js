@@ -222,8 +222,6 @@ async function addDataToList(listId, data, ids){
         list.add(option);
     });
 
-    list.hidden = true;
-
     switch(listId){
         case 'country_from': list.selectedIndex = 176; break;
         case 'country_to': list.selectedIndex = 231; break;
@@ -233,4 +231,22 @@ async function addDataToList(listId, data, ids){
     dselect(list, {
         search: true
     });
+}
+
+async function selectedIdChanged(){
+    const elem1 = document.getElementById("country_from");
+    const elem2 = document.getElementById("country_to");
+
+    const idx1 = elem1.selectedIndex;
+    const idx2 = elem2.selectedIndex;
+
+    var name1 = glob.loc_countries[idx1].name;
+    var lat1 = glob.loc_countries[idx1].latitude;
+    var long1 = glob.loc_countries[idx1].longitude;
+
+    var name2 = glob.loc_countries[idx2].name;
+    var lat2 = glob.loc_countries[idx2].latitude;
+    var long2 = glob.loc_countries[idx2].longitude;
+
+    updateMapData(name1, lat1, long1, name2, lat2, long2);
 }

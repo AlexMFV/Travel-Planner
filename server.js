@@ -7,6 +7,7 @@ const session = require('express-session');
 const { log } = require('./serverjs/logs');
 var bodyParser = require('body-parser');
 const { Resources } = require('./serverjs/messages');
+const PORT = 8080;
 
 //If there is an api key that is needed the template for the packet requests is below
 //as well as the path to the api key
@@ -49,8 +50,8 @@ app.get('/allTrips', getAllTrips);
 app.get('/allCountries', getAllCountries);
 app.get('/countriesEssencial', getCountriesEssencial);
 
-app.listen(8080);
-console.log("Server listening on port 8080!");
+app.listen(PORT);
+console.log("Server listening on port " + PORT + "!");
 
 /* SERVER METHODS */
 async function processLogin(req, res){
