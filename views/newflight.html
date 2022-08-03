@@ -70,7 +70,7 @@
     <script src="js/custom/dselect.js"></script>
   </head>
 
-  <body>
+  <body onload="loadCountryLists()">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -201,13 +201,13 @@
                     <div class="col-md-3">
                       <label for="country_from_box">Country (From)</label>
                       <select name="country_from_box" class="form-select" id="country_from">
-                        <option value="321">Portugal</option>
+                        <option value="321">Loading...</option>
                       </select>
                     </div>
                     <div class="col-md-3">
                       <label for="country_from_box">Country (To)</label>
                       <select name="country_to_box" class="form-select" id="country_to">
-                        <option value="321">United Kingdom</option>
+                        <option value="321">Loading...</option>
                       </select>
                     </div>
                     <div class="col-md-3">&nbsp;</div>
@@ -244,6 +244,7 @@
     <!-- / Layout wrapper -->
 
     <!-- Optional JavaScript -->
+    <script src="js/glob.js"></script>
     <script src="js/common.js"></script>
     <script src="js/login.js"></script>
 

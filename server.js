@@ -47,6 +47,7 @@ app.post('/newTrip', createTrip);
 /* GET REQUESTS */
 app.get('/allTrips', getAllTrips);
 app.get('/allCountries', getAllCountries);
+app.get('/countriesEssencial', getCountriesEssencial);
 
 app.listen(8080);
 console.log("Server listening on port 8080!");
@@ -149,6 +150,16 @@ async function getAllTrips(req, res) {
 async function getAllCountries(req, res) {
   try {
     const trips = await db.getAllCountries();
+    res.json(JSON.stringify(trips));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getCountriesEssencial(req, res) {
+  try {
+    const trips = await db.getCountriesEssencial();
     res.json(JSON.stringify(trips));
   }
   catch (e) {

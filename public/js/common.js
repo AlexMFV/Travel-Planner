@@ -163,6 +163,22 @@ async function getAllCountries() {
     });
 }
 
+async function getCountriesEssencial(){
+    await $.ajax({
+        type: 'GET',
+        url: '/countriesEssencial',
+        data: {},
+        success: function (data) {
+            if (data != null && data != undefined) {
+                glob.loc_countries = JSON.parse(data);
+            }
+        },
+        error: function (data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
+}
+
 function forceReloadTable(tableId, data){
     if(data != null && data != undefined)
         $('#'+tableId).DataTable().clear().rows.add(data).draw();
@@ -177,4 +193,44 @@ async function loadCountries(){
 async function loadTrips(){
     await getAllTrips();
     forceReloadTable("listTable", glob.trips);
+}
+
+async function loadCountryLists(){
+    //var values = glob.loc_countries
+    await getCountriesEssencial();
+
+    var ids = []
+    var values = []
+
+    await glob.loc_countries.forEach((value) => {
+        ids.push(value.codcountry);
+        values.push(value.name);
+    });
+
+    await addDataToList("country_from", values, ids);
+    await addDataToList("country_to", values, ids);
+}
+
+async function addDataToList(listId, data, ids){
+    const list = document.getElementById(listId);
+    list.innerHTML = "";
+
+    data.forEach((value, idx) => {
+        const option = document.createElement("option");
+        option.innerHTML = value;
+        option.value = ids[idx];
+        list.add(option);
+    });
+
+    list.hidden = true;
+
+    switch(listId){
+        case 'country_from': list.selectedIndex = 176; break;
+        case 'country_to': list.selectedIndex = 231; break;
+        default: list.selectedIndex = 0; break;
+    }
+
+    dselect(list, {
+        search: true
+    });
 }
