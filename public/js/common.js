@@ -250,3 +250,25 @@ async function selectedIdChanged(){
 
     updateMapData(name1, lat1, long1, name2, lat2, long2);
 }
+
+async function addNewFlight(){
+    const elem1 = document.getElementById("country_from");
+    const elem2 = document.getElementById("country_to");
+
+    const fromId = elem1.value;
+    const toId = elem2.value;
+
+    await $.ajax({
+        type: 'GET',
+        url: '/checkIfFlightExists',
+        data: {},
+        success: function (data) {
+            if (data != null && data != undefined) {
+                glob.loc_countries = JSON.parse(data);
+            }
+        },
+        error: function (data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
+}

@@ -352,3 +352,4 @@ MigrationBackup/
 node_modules
 config.json
 react-app
+localconnect.txt
