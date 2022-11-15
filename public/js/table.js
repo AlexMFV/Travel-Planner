@@ -11,7 +11,7 @@ $(function (){
     if(options != undefined)
         $("#listTable").DataTable(options);
 });
-
+ 
 //Table definitions
 function tripsTable() {
     let date = Date.now();
