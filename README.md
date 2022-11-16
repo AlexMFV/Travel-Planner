@@ -1,3 +1,3 @@
 # Travel-Planner
 
-[![Node.js CI](https://github.com/AlexMFV/Travel-Planner/actions/workflows/node.js.yml/badge.svg)](https://github.com/AlexMFV/Travel-Planner/actions/workflows/node.js.yml)
+[![Prototype Node.js CI](https://github.com/AlexMFV/Travel-Planner/actions/workflows/buildPrototype.yml/badge.svg)](https://github.com/AlexMFV/Travel-Planner/actions/workflows/buildPrototype.yml)
