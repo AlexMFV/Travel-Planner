@@ -1,3 +1,6 @@
+Urgent features:
+- Add Nodemon to the hosted website, this way when a file is changed, the server will restart automatically.
+
 Soon features:
 - Add "duration" field to New Flight page (and also to the stored procedure and methods)
 - Add Excel link to "Excel Document" sidebar menu
