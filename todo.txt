@@ -1,5 +1,12 @@
 Soon features:
 - Add "duration" field to New Flight page (and also to the stored procedure and methods)
+- Add Excel link to "Excel Document" sidebar menu
+- Sidebar dynamic page highlighting
+- Inside the list flight page:
+    - Add a badge to duration column indicating flight time (green < 4 hours, yellow < 8 hours, red < 12 hours, wine > 12 hours)
+    - Add a new column indicating the number of times that flight has been flown
+    - Add a new column indicating the last time that flight has been flown (maybe)
+    - Add a delete button to each row, this might not be done as it will require a confirmation dialog and probably cause problems if there are records using that flight
 
 Later features:
 - On the home page widgets add a widgets with a countdown to the next 3/5 trips or maybe a list with all trips

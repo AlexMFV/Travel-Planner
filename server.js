@@ -49,6 +49,7 @@ app.post('/newFlight', createFlight);
 /* GET REQUESTS */
 app.get('/allTrips', getAllTrips);
 app.get('/allCountries', getAllCountries);
+app.get('/allFlights', getAllFlights);
 app.get('/countriesEssencial', getCountriesEssencial);
 
 app.listen(PORT);
@@ -173,6 +174,16 @@ async function getAllCountries(req, res) {
   try {
     const trips = await db.getAllCountries();
     res.json(JSON.stringify(trips));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAllFlights(req, res) {
+  try {
+    const flights = await db.getAllFlights();
+    res.json(JSON.stringify(flights));
   }
   catch (e) {
     error(res, e);

@@ -5,6 +5,7 @@ $(function (){
     switch(page){
         case 'listtrip': options = tripsTable(); break;
         case 'countries': options = countriesTable(); break;
+        case 'listflight': options = flightsTable(); break;
         default: console.log("No table found"); break;
     }
 
@@ -81,6 +82,21 @@ function countriesTable() {
             { data: 'currency_name', title: 'Currency Name', "defaultContent": 'No data' },
             { data: 'currency', title: 'Currency', "defaultContent": 'No data' },
             { data: 'currency_symbol', title: 'Currency Symbol',  "defaultContent": 'No data' },
+        ],
+        "order": 1
+    }
+}
+
+function flightsTable() {
+    if(glob.flights == undefined || glob.flights == null)
+        flightsTable();
+
+    return {
+        data: glob.flights,
+        columns: [
+            { data: 'from_name', title: 'Flight Origin', "defaultContent": 'No data' ,render: (data, type, row) => { return '<strong>' + row.from_name + '</strong>' } },
+            { data: 'to_name', title: 'Flight Destination', "defaultContent": 'No data' , render: function (data, type, row) { return '<strong>' + row.to_name + '</strong>' } },
+            { data: 'duration', title: 'Flight Duration', "defaultContent": 'No data' , render: function (data, type, row) { return row.duration; } },
         ],
         "order": 1
     }
