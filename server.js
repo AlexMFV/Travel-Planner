@@ -44,10 +44,12 @@ app.get('/', function(req, res){
 app.post('/login', processLogin);
 app.post('/checkCookie', checkCookie);
 app.post('/newTrip', createTrip);
+app.post('/newFlight', createFlight);
 
 /* GET REQUESTS */
 app.get('/allTrips', getAllTrips);
 app.get('/allCountries', getAllCountries);
+app.get('/allFlights', getAllFlights);
 app.get('/countriesEssencial', getCountriesEssencial);
 
 app.listen(PORT);
@@ -138,6 +140,26 @@ async function createTrip(req, res) {
   }
 }
 
+async function createFlight(req, res) {
+  try {
+    const fromId = req.body.from;
+    const toId = req.body.to;
+
+    const exists = await db.checkFlightExists(fromId, toId);
+    if (exists)
+      throw new Error(Resources.FLIGHT_ALREADY_EXISTS);
+
+    const result = await db.createFlight(fromId, toId);
+    if(result == 0)
+      throw new Error(Resources.INSERT_ERROR);
+
+    res.json(true);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
 async function getAllTrips(req, res) {
   try {
     const trips = await db.getAllTrips();
@@ -152,6 +174,16 @@ async function getAllCountries(req, res) {
   try {
     const trips = await db.getAllCountries();
     res.json(JSON.stringify(trips));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAllFlights(req, res) {
+  try {
+    const flights = await db.getAllFlights();
+    res.json(JSON.stringify(flights));
   }
   catch (e) {
     error(res, e);

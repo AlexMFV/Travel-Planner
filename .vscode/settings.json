@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "Local",
+            "database": "travel",
+            "username": "root",
+            "password": "AlexandreMFV12",
+            "connectionTimeout": 50,
+            "group": "a"
+        }
+    ],
+    "liveServer.settings.multiRootWorkspaceName": "Travel-Planner"
+}

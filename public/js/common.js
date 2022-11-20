@@ -107,6 +107,13 @@ function showErrorMessage(message) {
     document.getElementById("error").innerHTML = alert;
 }
 
+function showWarningMessage(message) {
+    const alert = "<div id=\"alert1\" class=\"alert alert-warning alert-dismissible\" role=\"alert\">" + message +
+    "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
+
+    document.getElementById("error").innerHTML = alert;
+}
+
 function showSuccessMessage(message) {
     const alert = "<div id=\"alert1\" class=\"alert alert-success alert-dismissible\" role=\"alert\">" + message +
     "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
@@ -125,6 +132,17 @@ function checkMessages(){
     }
 }
 
+function redirectSuccess(){
+    window.location.href += "?success=true";
+}
+
+function redirectPageSuccess(page){
+    if(page.includes(".html"))
+        window.location.href = "/" + page + "?success=true";
+    else
+        window.location.href = "/" + page + ".html?success=true";
+}
+
 function getSearchParam(param){
     var url_string = window.location.href;
     var url = new URL(url_string);
@@ -139,6 +157,22 @@ async function getAllTrips() {
         success: function (data) {
             if (data != null && data != undefined) {
                 glob.trips = JSON.parse(data);
+            }
+        },
+        error: function (data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
+}
+
+async function getAllFlights() {
+    await $.ajax({
+        type: 'GET',
+        url: '/allFlights',
+        data: {},
+        success: function (data) {
+            if (data != null && data != undefined) {
+                glob.flights = JSON.parse(data);
             }
         },
         error: function (data) {
@@ -193,6 +227,11 @@ async function loadCountries(){
 async function loadTrips(){
     await getAllTrips();
     forceReloadTable("listTable", glob.trips);
+}
+
+async function loadFlights(){
+    await getAllFlights();
+    forceReloadTable("listTable", glob.flights);
 }
 
 async function loadCountryLists(){

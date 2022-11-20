@@ -15,14 +15,20 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>New Flight</title>
+    <title>Flight List</title>
 
     <meta name="description" content="" />
 
-    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" defer></script>
+    
     <script src="js/loadCommon.js"></script>
+    <script src="js/glob.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/table.js"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./bootstrap/assets/img/favicon/favicon.ico" />
@@ -53,24 +59,12 @@
     <!-- Helpers -->
     <script src="./bootstrap/assets/vendor/js/helpers.js"></script>
 
-    <!-- Map Resources -->
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="./bootstrap/assets/js/config.js"></script>
-    
-    <!-- Hierarchy Select CSS -->
-    <link rel="stylesheet" href="css/custom/hierarchy-select.min.css"/>    
-    <!-- Hierarchy Select Js -->
-    <script src="js/custom/hierarchy-select.min.js"></script>
-    <script src="js/custom/dselect.js"></script>
   </head>
 
-  <body onload="loadCountryLists()">
+  <body onload="loadFlights();">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -187,41 +181,19 @@
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
+            <!-- Content -->
 
-            <!-- MAIN CONTAINER -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Flights/</span> New Flight</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Flights/</span> Flight List</h4>
               <div id="error" class="row"></div>
               <div class="row card">
-                <h5 class="card-header">New Flight</h5>
+                <h5 class="card-header">Registered Flights</h5>
                 <div class="table-responsive text-nowrap">
-
-                  <div class="row" style="padding-bottom: 10px">
-                    <div class="col-md-3">&nbsp;</div>
-                    <div class="col-md-3">
-                      <label for="country_from_box">Country (From)</label>
-                      <select name="country_from_box" class="form-select" onchange="selectedIdChanged()" id="country_from">
-                        <option value="321">Loading...</option>
-                      </select>
-                    </div>
-                    <div class="col-md-3">
-                      <label for="country_from_box">Country (To)</label>
-                      <select name="country_to_box" class="form-select" onchange="selectedIdChanged()" id="country_to">
-                        <option value="321">Loading...</option>
-                      </select>
-                    </div>
-                    <div class="col-md-3">&nbsp;</div>
-
-                    <div class="col-md-4">&nbsp;</div>
-                    <div class="col-md-4" style="padding-top: 10px; text-align: center;">
-                      <a class="btn btn-outline-primary" href="javascript:void(0);" onclick="addNewFlight();">Add To Flight List</a>
-                    </div>
-                    <div class="col-md-4">&nbsp;</div>
-                  </div>
-                  <div id="flightGlobe" onload="loadGlobe();"></div>
+                  <table id="listTable" class="table table-hover"></table>
                 </div>
               </div>
             </div>
+            <!-- / Content -->
 
             <footer class="content-footer footer bg-footer-theme">
               <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
@@ -247,11 +219,8 @@
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
+    
     <!-- Optional JavaScript -->
-    <script src="js/glob.js"></script>
-    <script src="js/newFlight.js"></script>
-    <script src="js/common.js"></script>
     <script src="js/login.js"></script>
 
     <!-- Core JS -->
@@ -273,34 +242,7 @@
     <!-- Page JS -->
     <script src="./bootstrap/assets/js/dashboards-analytics.js"></script>
 
-    <style>
-      #flightGlobe {
-        width: 100%;
-        height: 650px;
-        overflow: hidden;
-        margin-bottom: 15px;
-      }
-    </style>
-
-<script src="js/flightglobe.js"></script>
-
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-    <script>
-
-      var countryFrom = document.querySelector('#country_from');
-      var countryTo = document.querySelector('#country_to');
-
-      dselect(countryFrom, {
-          search: true
-      });
-
-      dselect(countryTo, {
-          search: true
-      });
-    
-    </script>
-    
   </body>
 </html>
