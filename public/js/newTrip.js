@@ -53,7 +53,7 @@ function createTrip(){
             end: endDate
         },
         success: function(data) {
-            window.location.href = '/dashboard.html?success=true';
+            redirectPageSuccess("dashboard.html");
         },
         error: function(data) {
             showErrorMessage(data.responseJSON);

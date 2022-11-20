@@ -107,6 +107,13 @@ function showErrorMessage(message) {
     document.getElementById("error").innerHTML = alert;
 }
 
+function showWarningMessage(message) {
+    const alert = "<div id=\"alert1\" class=\"alert alert-warning alert-dismissible\" role=\"alert\">" + message +
+    "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
+
+    document.getElementById("error").innerHTML = alert;
+}
+
 function showSuccessMessage(message) {
     const alert = "<div id=\"alert1\" class=\"alert alert-success alert-dismissible\" role=\"alert\">" + message +
     "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
@@ -123,6 +130,17 @@ function checkMessages(){
     if(success){
         showSuccessMessage("The record was created successfully!");
     }
+}
+
+function redirectSuccess(){
+    window.location.href += "?success=true";
+}
+
+function redirectPageSuccess(page){
+    if(page.includes(".html"))
+        window.location.href = "/" + page + "?success=true";
+    else
+        window.location.href = "/" + page + ".html?success=true";
 }
 
 function getSearchParam(param){
@@ -249,26 +267,4 @@ async function selectedIdChanged(){
     var long2 = glob.loc_countries[idx2].longitude;
 
     updateMapData(name1, lat1, long1, name2, lat2, long2);
-}
-
-async function addNewFlight(){
-    const elem1 = document.getElementById("country_from");
-    const elem2 = document.getElementById("country_to");
-
-    const fromId = elem1.value;
-    const toId = elem2.value;
-
-    await $.ajax({
-        type: 'GET',
-        url: '/checkIfFlightExists',
-        data: {},
-        success: function (data) {
-            if (data != null && data != undefined) {
-                glob.loc_countries = JSON.parse(data);
-            }
-        },
-        error: function (data) {
-            showErrorMessage(data.responseJSON);
-        }
-    });
 }
