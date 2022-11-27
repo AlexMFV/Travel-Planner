@@ -1,0 +1,17 @@
+.hoverable .list-group-item:hover {
+    background-color: #a5a6ff;
+    color: #fff;
+}
+
+.list-group-item{
+    border-radius: 0%;
+}
+
+.themedd{
+    background-color: #a5a6ff !important;
+    color: #fff !important;
+}
+
+.themedd::placeholder {
+    color: #fff !important;
+}
