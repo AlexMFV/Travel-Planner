@@ -1,15 +1,12 @@
-$('#flightsToAdd>.list-group-item').on('click', function() {
+$(document).on('click', '#flightsToAdd>.list-group-item' , function() {
     //get pressed item name and id
     var id = $(this).attr('id');
-    var text = $(this).text().trim();
-
+    var text = $(this)[0].innerHTML;
+    
     addNewFlight(id, text);
 });
 
 function addNewFlight(id, text) {
-    //replace '->' with html tag fa-plane and surround with tab
-
-    text = text.replace('->', '<i class="fas fa-plane" style="padding-left: 5px; padding-right: 5px;"/></i>');
 
     $('#selectedFlights').append(
         '<li class="list-group-item themedd" id="' + id + '">' +

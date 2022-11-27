@@ -59,7 +59,7 @@
     <script src="./bootstrap/assets/js/config.js"></script>
   </head>
 
-  <body>
+  <body onload="loadTripInfo()">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -181,7 +181,8 @@
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Trips/</span> Edit Trip</h4>
               <div id="error" class="row"></div>
               <div class="row card">
-                <h5 class="card-header">&lt;Trip Name&gt;</h5>
+                <h5 class="card-header">&lt;Trip Name&gt; <span class="text-muted"> (&lt;DateStart&gt; - &lt;DateEnd&gt;)</span></h5>
+                <h6><span class="badge bg-label-primary">Current Status</span></h6>
                 <div class="table-responsive text-nowrap">
                   <!--! Accordions Start -->
                   <div class="col-md mb-4 mb-md-0" style="padding-bottom: 20px">
@@ -201,15 +202,7 @@
                               <small class="text-muted">Available flights</small>
                               <div class="demo-inline-spacing mt-3">
                                 <ul id="flightsToAdd" class="list-group customScroll hoverable">
-                                  <li id="flightNum1" class="list-group-item d-flex justify-content-between align-items-center">
-                                    Portugal -> United Kingdom
-                                  </li>
-                                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    United Kingdom -> Italy
-                                  </li>
-                                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    United Kingdom -> Portugal
-                                  </li>          
+                                  <!--! Flights loaded from DB go here -->         
                                 </ul>
                               </div>
                             </div>
@@ -218,7 +211,7 @@
                               <small class="text-muted">Flights added</small>
                               <div class="demo-inline-spacing mt-3">
                                 <ul id="selectedFlights" class="list-group customScroll">
-          
+                                  <!--! Flights added go here, to then be saved to the database along the rest of the data -->
                                 </ul>
                               </div>
                             </div>
@@ -290,6 +283,7 @@
     <!-- / Layout wrapper -->
 
     <!-- Optional JavaScript -->
+    <script src="js/glob.js"></script>
     <script src="js/common.js"></script>
     <script src="js/login.js"></script>
     <script src="js/edittrip.js"></script>

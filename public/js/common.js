@@ -218,6 +218,10 @@ function forceReloadTable(tableId, data){
         $('#'+tableId).DataTable().clear().rows.add(data).draw();
 }
 
+function appendItems(selector, tag){
+    $('#'+selector).append(tag);
+}
+
 //Load Data
 async function loadCountries(){
     await getAllCountries();
@@ -232,6 +236,25 @@ async function loadTrips(){
 async function loadFlights(){
     await getAllFlights();
     forceReloadTable("listTable", glob.flights);
+}
+
+async function loadTripInfo(){
+    await getAllFlights();
+    //await getAllRestaurants();
+    //await getAllAttractions();
+    
+    //get trip id from url
+    const tripId = getSearchParam("id");
+    //await getTripFlights();
+
+    glob.flights.forEach(flight => {        
+        appendItems('flightsToAdd',
+        '<li id="' + flight.id + '" class="list-group-item d-flex align-items-center">' +
+        flight.from_name +
+        '<i class="fas fa-plane" style="padding-left: 10px; padding-right: 10px;"></i>' +
+        flight.to_name +
+        '</li>');
+    });
 }
 
 async function loadCountryLists(){
