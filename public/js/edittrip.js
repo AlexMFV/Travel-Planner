@@ -8,28 +8,45 @@ $(document).on('click', '#flightsToAdd>.list-group-item' , function() {
 
 function addNewFlight(id, text) {
     $('#selectedFlights').append(
-        '<li class="list-group-item themedd" id="' + id + '_n">' +
-        '<div class="row" style="padding-bottom: 10px;">' +
-            '<div class="col-md-9" style="align-self:center; font-size:large;">' +
-                text +
-            '</div>' +
-            '<div class="col-md-3">' +
-                '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeFlight(this)">' +
-                '<i class="fas fa-times"></i>' +
-                '</button>' +
-            '</div>' +
-        '</div>' +
-
-        '<div class="row">' +
-            '<div class="col-md-6">' +
-                '<input type="date" class="form-control" id="date" value="' + new Date().toISOString().slice(0, 10) + '" required>' +
-            '</div>' +
-            '<div class="col-md-6">' +
-                '<input type="number" class="form-control" id="price" placeholder="Price" min="0" step="0.01" required />' +
-            '</div>' +
-        '</div>' +
-        '</li>'
+        flightElement(id, text, '_n', null, null)
     );
+}
+
+function createFlightElement(flight){
+    var icon = '<i class="fas fa-plane" style="padding-left: 10px; padding-right: 10px;"></i>';
+
+    $('#selectedFlights').append(
+        flightElement(flight.codtripflight, flight.fromName + icon + flight.toName, '', formatDate(flight.date) , flight.value)
+    );
+}
+
+function flightElement(id, text, type, date, price){    
+    var value = "";
+    if(price != null)
+         value = "value='" + price + "'";
+
+    return '<li class="list-group-item themedd" id="' + id + type + '">' +
+    '<div class="row" style="padding-bottom: 10px;">' +
+        '<div class="col-md-9" style="align-self:center; font-size:large;">' +
+            text +
+        '</div>' +
+        '<div class="col-md-3">' +
+            '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeFlight(this)">' +
+            '<i class="fas fa-times"></i>' +
+            '</button>' +
+        '</div>' +
+    '</div>' +
+
+    '<div class="row">' +
+        '<div class="col-md-6">' +
+        //date is not null then add date, otherwise add current date
+            '<input type="date" class="form-control" id="date" value="' + (date === null ? new Date().toISOString().slice(0, 10) : date) + '" required>' +
+        '</div>' +
+        '<div class="col-md-6">' +
+            '<input type="number" class="form-control" id="price"' + value + 'placeholder="Price" min="0" step="0.01" required />' +
+        '</div>' +
+    '</div>' +
+    '</li>'
 }
 
 function removeFlight(index){
@@ -49,9 +66,9 @@ function saveTripRecord(){
     //    flights: []
     //};
 
-    flightsToAdd = [{}];
-    flightsToUpdate = [{}];
-    flightsToDelete = [{}];
+    flightsToAdd = [];
+    flightsToUpdate = [];
+    flightsToDelete = [];
 
     $('#selectedFlights>.list-group-item').each(function(index, element){
         var flight = {
@@ -59,31 +76,76 @@ function saveTripRecord(){
             date: $(element).find('#date').val(),
             price: $(element).find('#price').val() === '' ? 0 : $(element).find('#price').val()
         };
-        
-        console.log(flight);
 
         //if id contains '_n' then it's a new flight
         if(flight.id.includes('_n'))
+        {
+            flight.id = flight.id.replace('_n', '');
             flightsToAdd.push(flight);
+        }
 
         if(flight.id.includes('_u'))
+        {
+            flight.id = flight.id.replace('_u', '');
             flightsToUpdate.push(flight);
+        }
 
         if(flight.id.includes('_d'))
+        {
+            flight.id = flight.id.replace('_d', '');
             flightsToDelete.push(flight);
+        }
     });
 
-    //var tripJson = JSON.stringify(trip);
-    //console.log(tripJson);
+    //get param 'id' from url
+    var id = getSearchParam('id');
 
-    //send to server
-    //$.ajax({
-    //    url: '/api/trips',
-    //    type: 'POST',
-    //    data: tripJson,
-    //    contentType: 'application/json',
-    //    success: function(result) {
-    //        window.location.href = "/trips";
-    //    }
-    //});
+    //flightsToAdd should add each entry to the database as a new tripflight
+    flightsToAdd.forEach(flight => {
+        $.ajax({
+            url: '/newTripFlight',
+            type: 'POST',
+            data: {
+                tripId: id,
+                flightId: flight.id,
+                date: flight.date,
+                value: flight.price
+            },
+            error: function (data) {
+                showErrorMessage(data.responseJSON);
+                return;
+            }
+        });
+    });
+
+    flightsToUpdate.forEach(flight => {
+        $.ajax({
+            url: '/updateTripFlight',
+            type: 'POST',
+            data: {
+                tripId: id,
+                flightId: flight.id,
+                date: flight.date,
+                value: flight.price
+            },
+            error: function (data) {
+                showErrorMessage(data.responseJSON);
+                return;
+            }
+        });
+    });
+
+    flightsToDelete.forEach(flight => {
+        $.ajax({
+            url: '/deleteTripFlight',
+            type: 'POST',
+            data: { id: tripflightId },
+            error: function (data) {
+                showErrorMessage(data.responseJSON);
+                return;
+            }
+        });
+    });
+
+    redirectPageSuccess('listtrip');
 }

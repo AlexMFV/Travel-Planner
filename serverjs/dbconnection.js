@@ -105,6 +105,20 @@ async function createFlight(fromId, toId){
     }
 }
 
+async function createTripFlight(codtrip, codflight, date, value){
+    try {
+        let numRows = await callProcedureNonQuery('createTripFlight', [codtrip, codflight, date, value]);
+        querylog("createTripFlight");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
 async function getAllTrips(){
     let rows = await callProcedureRows('getAllTrips', []);
     querylog("getAllTrips");
@@ -133,6 +147,12 @@ async function checkFlightExists(fromId, toId){
     let rows = await callProcedureFirstRow('checkFlightExists', [fromId, toId]);
     querylog("checkFlightExists");
     return (rows != undefined && rows.codflight != undefined) ? true : false;
+}
+
+async function getAllTripFlights(tripId){
+    let rows = await callProcedureRows('getAllTripFlights', [tripId]);
+    querylog("getAllTripFlights");
+    return rows;
 }
 
 /* STATIC FUNCTIONS */
@@ -179,4 +199,4 @@ function formatQuery(name, parameters){
 
 module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies,
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
-    getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight, getAllFlights }
+    getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight, getAllFlights, createTripFlight, getAllTripFlights  }

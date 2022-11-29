@@ -4,4 +4,5 @@ var glob = {
     flights: [{}],
     loc_countries: [{}],
     tripInfo: {},
+    tripFlights: [{}],
 }

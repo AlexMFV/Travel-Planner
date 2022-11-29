@@ -45,12 +45,14 @@ app.post('/login', processLogin);
 app.post('/checkCookie', checkCookie);
 app.post('/newTrip', createTrip);
 app.post('/newFlight', createFlight);
+app.post('/newTripFlight', createTripFlight);
 
 /* GET REQUESTS */
 app.get('/allTrips', getAllTrips);
 app.get('/allCountries', getAllCountries);
 app.get('/allFlights', getAllFlights);
 app.get('/countriesEssencial', getCountriesEssencial);
+app.get('/allTripFlights', getAllTripFlights);
 
 app.listen(PORT);
 console.log("Server listening on port " + PORT + "!");
@@ -160,9 +162,38 @@ async function createFlight(req, res) {
   }
 }
 
+async function createTripFlight(req, res) {
+  try {
+    const tripId = req.body.tripId;
+    const flightId = req.body.flightId;
+    const date = req.body.date;
+    const value = req.body.value;
+
+    const result = await db.createTripFlight(tripId, flightId, date, value);
+    if(result == 0)
+      throw new Error(Resources.INSERT_ERROR);
+
+    res.json(true);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
 async function getAllTrips(req, res) {
   try {
     const trips = await db.getAllTrips();
+    res.json(JSON.stringify(trips));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAllTripFlights(req, res) {
+  try {
+    const id = req.query.id;
+    const trips = await db.getAllTripFlights(id);
     res.json(JSON.stringify(trips));
   }
   catch (e) {
