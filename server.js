@@ -54,6 +54,9 @@ app.get('/allFlights', getAllFlights);
 app.get('/countriesEssencial', getCountriesEssencial);
 app.get('/allTripFlights', getAllTripFlights);
 
+/* DELETE REQUESTS */
+app.post('/deleteTripFlight', deleteTripFlight);
+
 app.listen(PORT);
 console.log("Server listening on port " + PORT + "!");
 
@@ -225,6 +228,17 @@ async function getCountriesEssencial(req, res) {
   try {
     const trips = await db.getCountriesEssencial();
     res.json(JSON.stringify(trips));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function deleteTripFlight(req, res) {
+  try {
+    const id = req.body.tripFlightId;
+    const result = await db.deleteTripFlight(id);
+    res.json(result);
   }
   catch (e) {
     error(res, e);

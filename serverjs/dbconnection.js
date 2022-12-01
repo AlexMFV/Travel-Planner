@@ -155,6 +155,20 @@ async function getAllTripFlights(tripId){
     return rows;
 }
 
+async function deleteTripFlight(codtripflight){
+    try {
+        let numRows = await callProcedureNonQuery('deleteTripFlight', [codtripflight]);
+        querylog("deleteTripFlight");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
 /* STATIC FUNCTIONS */
 
 /**
@@ -199,4 +213,4 @@ function formatQuery(name, parameters){
 
 module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies,
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
-    getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight, getAllFlights, createTripFlight, getAllTripFlights  }
+    getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight, getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight  }

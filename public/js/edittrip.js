@@ -50,11 +50,19 @@ function flightElement(id, text, type, date, price){
 }
 
 function removeFlight(index){
+    var parent = index.parentNode.parentNode.parentNode;
     //if the id does not contain '_n' we hide the parent node, otherwise we remove it
-    if(!index.parentNode.parentNode.parentNode.id.includes('_n'))
-        index.parentNode.parentNode.parentNode.style.display = 'none';
+    if(!parent.id.includes('_n'))
+    {
+        if(!parent.id.includes('_d') && !parent.id.includes('_u'))
+            parent.id += '_d';
+        else if(parent.id.includes('_u'))
+            parent.id = parent.id.replace('_u', '_d');
+
+        parent.style.display = 'none';
+    }
     else
-        index.parentNode.parentNode.parentNode.remove();
+        parent.remove();
 }
 
 function saveTripRecord(){
@@ -136,10 +144,11 @@ function saveTripRecord(){
     });
 
     flightsToDelete.forEach(flight => {
+        var flightId = flight.id;
         $.ajax({
             url: '/deleteTripFlight',
             type: 'POST',
-            data: { id: tripflightId },
+            data: { tripFlightId: flightId },
             error: function (data) {
                 showErrorMessage(data.responseJSON);
                 return;
