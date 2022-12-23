@@ -21,6 +21,8 @@
 
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <script src="js/loadCommon.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/common.css" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./bootstrap/assets/img/favicon/favicon.ico" />
@@ -56,7 +58,7 @@
     <script src="./bootstrap/assets/js/config.js"></script>
   </head>
 
-  <body>
+  <body onload="loadDashboard()">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -213,33 +215,13 @@
                       <div class="card">
                         <div class="card-body">
                           <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                              <img
-                                src="./bootstrap/assets/img/icons/unicons/chart-success.png"
-                                alt="chart success"
-                                class="rounded"
-                              />
-                            </div>
-                            <div class="dropdown">
-                              <button
-                                class="btn p-0"
-                                type="button"
-                                id="cardOpt3"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              >
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                              </button>
-                              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                              </div>
+                            <div class="avatar flex-shrink-0 custom-icon igreen">
+                              <i class="fas fa-coins"></i>
                             </div>
                           </div>
-                          <span class="fw-semibold d-block mb-1">Profit</span>
-                          <h3 class="card-title mb-2">$12,628</h3>
-                          <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                          <span class="fw-semibold d-block mb-1">Flights Cost </span>
+                          <h3 id="totalFlightValue" class="card-title mb-2">-. €</h3>
+                          <small id="flightValueChange" class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +/- %</small>
                         </div>
                       </div>
                     </div>
@@ -740,6 +722,8 @@
     <!-- Optional JavaScript -->
     <script src="js/common.js"></script>
     <script src="js/login.js"></script>
+    <script src="js/glob.js"></script>
+    <script src="js/dashboard.js"></script>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

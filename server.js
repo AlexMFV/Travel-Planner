@@ -53,6 +53,7 @@ app.get('/allCountries', getAllCountries);
 app.get('/allFlights', getAllFlights);
 app.get('/countriesEssencial', getCountriesEssencial);
 app.get('/allTripFlights', getAllTripFlights);
+app.post('/monthlyFlightReportByYear', getMonthlyFlightReportByYear);
 
 /* DELETE REQUESTS */
 app.post('/deleteTripFlight', deleteTripFlight);
@@ -228,6 +229,17 @@ async function getCountriesEssencial(req, res) {
   try {
     const trips = await db.getCountriesEssencial();
     res.json(JSON.stringify(trips));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getMonthlyFlightReportByYear(req, res) {
+  try {
+    const year = req.body.year;
+    const report = await db.getMonthlyFlightReportByYear(year);
+    res.json(JSON.stringify(report));
   }
   catch (e) {
     error(res, e);

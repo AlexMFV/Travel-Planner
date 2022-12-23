@@ -16,3 +16,25 @@
 .themedd::placeholder {
     color: #fff !important;
 }
+
+.currency{
+    padding-left: 0px !important;
+    align-self: center;
+}
+
+.custom-icon{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    width: 2.375rem;
+    height: 2.375rem;
+}
+
+.igreen {
+    color: var(--bs-green);
+    background: #71dd3738;
+    border-radius: 0.375rem;
+}

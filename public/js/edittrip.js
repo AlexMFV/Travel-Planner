@@ -42,8 +42,11 @@ function flightElement(id, text, type, date, price){
         //date is not null then add date, otherwise add current date
             '<input type="date" class="form-control" id="date" value="' + (date === null ? new Date().toISOString().slice(0, 10) : date) + '" required>' +
         '</div>' +
-        '<div class="col-md-6">' +
+        '<div class="col-md-5">' +
             '<input type="number" class="form-control" id="price"' + value + 'placeholder="Price" min="0" step="0.01" required />' +
+        '</div>' +
+        '<div class="col-md-1 currency">' +
+            '<span class="themedd" style="font-size: large">€</span>' +
         '</div>' +
     '</div>' +
     '</li>'

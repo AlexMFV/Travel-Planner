@@ -5,4 +5,6 @@ var glob = {
     loc_countries: [{}],
     tripInfo: {},
     tripFlights: [{}],
+    flightReport: {},
+    flightReportPrevYear: {},
 }
