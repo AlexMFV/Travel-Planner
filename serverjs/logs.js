@@ -1,4 +1,4 @@
-var ENABLE_LOGS = true;
+var ENABLE_LOGS = false;
 
 function querylog(query){
     if(ENABLE_LOGS)

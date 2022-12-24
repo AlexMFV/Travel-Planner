@@ -213,9 +213,29 @@ async function getCountriesEssencial(){
     });
 }
 
+async function getAllTripFlights(id){
+    await $.ajax({
+        type: 'GET',
+        url: '/allTripFlights',
+        data: {id: id},
+        success: function (data) {
+            if (data != null && data != undefined) {
+                glob.tripFlights = JSON.parse(data);
+            }
+        },
+        error: function (data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
+}
+
 function forceReloadTable(tableId, data){
     if(data != null && data != undefined)
         $('#'+tableId).DataTable().clear().rows.add(data).draw();
+}
+
+function appendItems(selector, tag){
+    $('#'+selector).append(tag);
 }
 
 //Load Data
@@ -232,6 +252,30 @@ async function loadTrips(){
 async function loadFlights(){
     await getAllFlights();
     forceReloadTable("listTable", glob.flights);
+}
+
+async function loadTripInfo(){
+    const id = getSearchParam("id");
+
+    await getAllFlights();
+    await getAllTripFlights(id);
+    //await getAllRestaurants();
+    //await getAllAttractions();
+    
+    //await getTripFlights();
+
+    glob.flights.forEach(flight => {        
+        appendItems('flightsToAdd',
+        '<li id="' + flight.id + '" class="list-group-item d-flex align-items-center">' +
+        flight.from_name +
+        '<i class="fas fa-plane" style="padding-left: 10px; padding-right: 10px;"></i>' +
+        flight.to_name +
+        '</li>');
+    });
+
+    glob.tripFlights.forEach(flight => {
+        createFlightElement(flight);
+    });
 }
 
 async function loadCountryLists(){
@@ -288,4 +332,8 @@ async function selectedIdChanged(){
     var long2 = glob.loc_countries[idx2].longitude;
 
     updateMapData(name1, lat1, long1, name2, lat2, long2);
+}
+
+function formatDate(date){
+    return new Date(date).toISOString().slice(0,10);
 }

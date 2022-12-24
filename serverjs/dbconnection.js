@@ -105,6 +105,20 @@ async function createFlight(fromId, toId){
     }
 }
 
+async function createTripFlight(codtrip, codflight, date, value){
+    try {
+        let numRows = await callProcedureNonQuery('createTripFlight', [codtrip, codflight, date, value]);
+        querylog("createTripFlight");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
 async function getAllTrips(){
     let rows = await callProcedureRows('getAllTrips', []);
     querylog("getAllTrips");
@@ -133,6 +147,52 @@ async function checkFlightExists(fromId, toId){
     let rows = await callProcedureFirstRow('checkFlightExists', [fromId, toId]);
     querylog("checkFlightExists");
     return (rows != undefined && rows.codflight != undefined) ? true : false;
+}
+
+async function getAllTripFlights(tripId){
+    let rows = await callProcedureRows('getAllTripFlights', [tripId]);
+    querylog("getAllTripFlights");
+    return rows;
+}
+
+async function getTripInfo(tripId){
+    let row = await callProcedureFirstRow('getTripInfo', [tripId]);
+    querylog("getTripInfo");
+    return row;
+}
+
+async function getMonthlyFlightReportByYear(year){
+    let rows = await callProcedureRows('getMonthlyFlightReportByYear', [year]);
+    querylog("getMonthlyFlightReportByYear");
+    return rows;
+}
+
+async function deleteTripFlight(codtripflight){
+    try {
+        let numRows = await callProcedureNonQuery('deleteTripFlight', [codtripflight]);
+        querylog("deleteTripFlight");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
+async function updateTripFlight(id, date, value){
+    try {
+        let numRows = await callProcedureNonQuery('updateTripFlight', [id, date, value]);
+        querylog("updateTripFlight");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
 }
 
 /* STATIC FUNCTIONS */
@@ -179,4 +239,6 @@ function formatQuery(name, parameters){
 
 module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies,
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
-    getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight, getAllFlights }
+    getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight,
+    getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight, getMonthlyFlightReportByYear,
+    updateTripFlight, getTripInfo }

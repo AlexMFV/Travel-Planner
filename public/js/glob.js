@@ -2,5 +2,9 @@ var glob = {
     trips: [{}],
     countries: [{}],
     flights: [{}],
-    loc_countries: [{}]
+    loc_countries: [{}],
+    tripInfo: {},
+    tripFlights: [{}],
+    flightReport: {},
+    flightReportPrevYear: {},
 }

@@ -22,7 +22,7 @@ function tripsTable() {
         data: glob.trips,
         columns: [
             { data: null, render: function ( data, type, row ) {
-                return '<a href="/editTrip?id=' + row.codtrip + '" class="btn btn-outline-primary" target="_blank">Plan</a>'
+                return '<a href="/edittrip.html?id=' + row.codtrip + '" class="btn btn-outline-primary">Plan</a>'
             } },
             { data: 'trip_name', title: 'Trip Name', "defaultContent": 'No data' ,render: (data, type, row) => { return '<strong>' + row.trip_name + '</strong>' } },
             { data: 'date_start', title: 'Start Date', "defaultContent": 'No data' , render: function (data, type, row) { return moment(row.date_start).format('DD/MM/YYYY'); } },

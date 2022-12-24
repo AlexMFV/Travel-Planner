@@ -45,12 +45,22 @@ app.post('/login', processLogin);
 app.post('/checkCookie', checkCookie);
 app.post('/newTrip', createTrip);
 app.post('/newFlight', createFlight);
+app.post('/newTripFlight', createTripFlight);
 
 /* GET REQUESTS */
 app.get('/allTrips', getAllTrips);
 app.get('/allCountries', getAllCountries);
 app.get('/allFlights', getAllFlights);
 app.get('/countriesEssencial', getCountriesEssencial);
+app.get('/allTripFlights', getAllTripFlights);
+app.post('/monthlyFlightReportByYear', getMonthlyFlightReportByYear);
+app.get('/getTripInfo', getTripInfo);
+
+/* DELETE REQUESTS */
+app.post('/deleteTripFlight', deleteTripFlight);
+
+/* PUT REQUESTS */
+app.post('/updateTripFlight', updateTripFlight);
 
 app.listen(PORT);
 console.log("Server listening on port " + PORT + "!");
@@ -160,9 +170,49 @@ async function createFlight(req, res) {
   }
 }
 
+async function createTripFlight(req, res) {
+  try {
+    const tripId = req.body.tripId;
+    const flightId = req.body.flightId;
+    const date = req.body.date;
+    const value = req.body.value;
+
+    const result = await db.createTripFlight(tripId, flightId, date, value);
+    if(result == 0)
+      throw new Error(Resources.INSERT_ERROR);
+
+    res.json(true);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
 async function getAllTrips(req, res) {
   try {
     const trips = await db.getAllTrips();
+    res.json(JSON.stringify(trips));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getTripInfo(req, res) {
+  try {
+    const id = req.query.id;
+    const info = await db.getTripInfo(id);
+    res.json(JSON.stringify(info));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAllTripFlights(req, res) {
+  try {
+    const id = req.query.id;
+    const trips = await db.getAllTripFlights(id);
     res.json(JSON.stringify(trips));
   }
   catch (e) {
@@ -194,6 +244,42 @@ async function getCountriesEssencial(req, res) {
   try {
     const trips = await db.getCountriesEssencial();
     res.json(JSON.stringify(trips));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getMonthlyFlightReportByYear(req, res) {
+  try {
+    const year = req.body.year;
+    const report = await db.getMonthlyFlightReportByYear(year);
+    res.json(JSON.stringify(report));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function deleteTripFlight(req, res) {
+  try {
+    const id = req.body.tripFlightId;
+    const result = await db.deleteTripFlight(id);
+    res.json(result);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function updateTripFlight(req, res){
+  try {
+    const id = req.body.tripFlightId;
+    const date = req.body.date;
+    const value = req.body.value;
+
+    const result = await db.updateTripFlight(id, date, value);
+    res.json(result);
   }
   catch (e) {
     error(res, e);
