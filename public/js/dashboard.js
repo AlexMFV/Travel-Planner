@@ -25,7 +25,7 @@ async function loadDashboard(){
         flightValueChange = 100; //If there is no value from the previous year, the change is 100%
     else
     {
-        flightValueChange = flightValueChange / totalValuePrevYear;
+        flightValueChange = flightValueChange / totalValue;
         flightValueChange = flightValueChange * 100;
     }
 
