@@ -22,7 +22,6 @@ function updateValue(name, value){
 }
 
 function checkDates(){
-    console.log("Test");
     //if start date is after end date, set end date to start date
     if(document.getElementById('startDate').value > document.getElementById('endDate').value){
         updateValue('endDate', document.getElementById('startDate').value);

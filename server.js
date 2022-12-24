@@ -54,9 +54,13 @@ app.get('/allFlights', getAllFlights);
 app.get('/countriesEssencial', getCountriesEssencial);
 app.get('/allTripFlights', getAllTripFlights);
 app.post('/monthlyFlightReportByYear', getMonthlyFlightReportByYear);
+app.get('/getTripInfo', getTripInfo);
 
 /* DELETE REQUESTS */
 app.post('/deleteTripFlight', deleteTripFlight);
+
+/* PUT REQUESTS */
+app.post('/updateTripFlight', updateTripFlight);
 
 app.listen(PORT);
 console.log("Server listening on port " + PORT + "!");
@@ -194,6 +198,17 @@ async function getAllTrips(req, res) {
   }
 }
 
+async function getTripInfo(req, res) {
+  try {
+    const id = req.query.id;
+    const info = await db.getTripInfo(id);
+    res.json(JSON.stringify(info));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
 async function getAllTripFlights(req, res) {
   try {
     const id = req.query.id;
@@ -250,6 +265,20 @@ async function deleteTripFlight(req, res) {
   try {
     const id = req.body.tripFlightId;
     const result = await db.deleteTripFlight(id);
+    res.json(result);
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function updateTripFlight(req, res){
+  try {
+    const id = req.body.tripFlightId;
+    const date = req.body.date;
+    const value = req.body.value;
+
+    const result = await db.updateTripFlight(id, date, value);
     res.json(result);
   }
   catch (e) {

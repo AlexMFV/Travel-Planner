@@ -221,7 +221,6 @@ async function getAllTripFlights(id){
         success: function (data) {
             if (data != null && data != undefined) {
                 glob.tripFlights = JSON.parse(data);
-                console.log(glob.tripFlights);
             }
         },
         error: function (data) {

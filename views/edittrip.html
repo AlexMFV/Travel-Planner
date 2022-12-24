@@ -49,6 +49,8 @@
 
     <link rel="stylesheet" href="./bootstrap/assets/vendor/libs/apex-charts/apex-charts.css" />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/moment.min.js"></script>
+
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -181,8 +183,8 @@
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Trips/</span> Edit Trip</h4>
               <div id="error" class="row"></div>
               <div class="row card">
-                <h5 class="card-header">&lt;Trip Name&gt; <span class="text-muted"> (&lt;DateStart&gt; - &lt;DateEnd&gt;)</span></h5>
-                <h6><span class="badge bg-label-primary">Current Status</span></h6>
+                <h5 id="trip_name" class="card-header">&lt;Trip Name&gt; <span id="trip_dates" class="text-muted"> (&lt;DateStart&gt; - &lt;DateEnd&gt;)</span></h5>
+                <h6><span id="trip_status" class="badge bg-label-primary">Current Status</span></h6>
                 <div class="table-responsive text-nowrap">
                   <button type="button" class="btn btn-primary" onclick="saveTripRecord()">Save</button>
                   <!--! Accordions Start -->

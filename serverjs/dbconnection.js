@@ -155,6 +155,12 @@ async function getAllTripFlights(tripId){
     return rows;
 }
 
+async function getTripInfo(tripId){
+    let row = await callProcedureFirstRow('getTripInfo', [tripId]);
+    querylog("getTripInfo");
+    return row;
+}
+
 async function getMonthlyFlightReportByYear(year){
     let rows = await callProcedureRows('getMonthlyFlightReportByYear', [year]);
     querylog("getMonthlyFlightReportByYear");
@@ -165,6 +171,20 @@ async function deleteTripFlight(codtripflight){
     try {
         let numRows = await callProcedureNonQuery('deleteTripFlight', [codtripflight]);
         querylog("deleteTripFlight");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
+async function updateTripFlight(id, date, value){
+    try {
+        let numRows = await callProcedureNonQuery('updateTripFlight', [id, date, value]);
+        querylog("updateTripFlight");
 
         if (numRows == 1)
             return true;
@@ -220,4 +240,5 @@ function formatQuery(name, parameters){
 module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredCookies,
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
     getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight,
-    getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight, getMonthlyFlightReportByYear }
+    getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight, getMonthlyFlightReportByYear,
+    updateTripFlight, getTripInfo }
