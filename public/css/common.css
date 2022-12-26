@@ -47,3 +47,18 @@
     border-radius: 5px;
     border: #696cff 1px solid;
 }
+
+#map {
+    height: 350px;
+    width: 100%;
+    border-radius: 5px;
+    border: #696cff 1px solid;
+}
+
+.search-input {
+	font-family:Courier
+}
+.search-input,
+.leaflet-control-search {
+	max-width:400px;
+}
