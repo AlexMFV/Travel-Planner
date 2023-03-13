@@ -172,7 +172,7 @@ async function createFlight(req, res) {
 
 async function createTripFlight(req, res) {
   try {
-    const tripId = req.body.tripId;
+    const tripId = req.body.tripFlightId;
     const flightId = req.body.flightId;
     const date = req.body.date;
     const value = req.body.value;
