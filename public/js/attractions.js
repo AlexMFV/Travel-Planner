@@ -1,3 +1,5 @@
+var marker = null;
+
 $(function() {
     //create map
     var map = L.map('map').setView([51.505, -0.09], 3);
@@ -16,16 +18,14 @@ $(function() {
 		minLength: 2
 	}) );
 
-    var marker = null;   
-
     //create pin on click
     map.on('click', function(e) {
         if(marker != null) {
             map.removeLayer(marker);
         }
         marker = L.marker(e.latlng).addTo(map);
-        document.getElementById("lat").value = e.latlng.lat;
-        document.getElementById("lng").value = e.latlng.lng; 
+        //document.getElementById("lat").value = e.latlng.lat;
+        //document.getElementById("lng").value = e.latlng.lng; 
     });
 });
 
@@ -40,42 +40,152 @@ function addNewTicket() {
     $('#ticketsToAdd').append(ticketElement(1, "Test", "ticket", null, null));
 }
 
-function createTicketElement(flight){
+function createTicketElement(ticket){
     var icon = '<i class="fas fa-plane" style="padding-left: 10px; padding-right: 10px;"></i>';
 
-    $('#selectedFlights').append(
-        flightElement(flight.codtripflight, flight.fromName + icon + flight.toName, '', formatDate(flight.date) , flight.value)
+    $('#selectedTickets').append(
+        //ticketElement(ticket.codtripflight, flight.fromName + icon + flight.toName, '', formatDate(flight.date) , flight.value)
     );
 }
 
-function ticketElement(id, text, type, date, price){    
+function ticketElement(id, text, type, date, noPeople){    
     var value = "";
-    if(price != null)
-         value = "value='" + price + "'";
+    if(noPeople != null)
+         value = "value='" + noPeople + "'";
+
+    //Get number of childs in list "ticketsToAdd"
+    var num = document.getElementById("ticketsToAdd").childElementCount;
 
     return '<li class="list-group-item themedd" id="' + id + type + '">' +
     '<div class="row" style="padding-bottom: 10px;">' +
         '<div class="col-md-9" style="align-self:center; font-size:large;">' +
-            text +
+            '<input type="text" class="form-control" placeholder="Ticket title" id="ticketName' + num + '">' +
         '</div>' +
         '<div class="col-md-3">' +
-            '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeFlight(this)">' +
+            '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeTicket(this)">' +
             '<i class="fas fa-times"></i>' +
             '</button>' +
         '</div>' +
     '</div>' +
 
+    //'<div class="row">' +
+    //    '<div class="col-md-5">' +
+    //        'Ticket for:' +
+    //        '<input type="number" onchange="markAsUpdate(this)" class="form-control" id="numberPeople"' + value + 'placeholder="No. People" min="1" step="1" required />' +
+    //        //' person/people' +
+    //    '</div>' +
+    //'</div>' +
+
     '<div class="row">' +
-        '<div class="col-md-6">' +
-        //date is not null then add date, otherwise add current date
-            '<input type="date" onchange="markAsUpdate(this)" class="form-control" id="date" value="' + (date === null ? new Date().toISOString().slice(0, 10) : date) + '" required>' +
-        '</div>' +
-        '<div class="col-md-5">' +
-            '<input type="number" onchange="markAsUpdate(this)" class="form-control" id="price"' + value + 'placeholder="Price" min="0" step="0.01" required />' +
-        '</div>' +
-        '<div class="col-md-1 currency">' +
-            '<span class="themedd" style="font-size: large">€</span>' +
+    '<div class="col-md-12">' +
+        '<div class="row">' +
+            '<div class="col-3">' +
+                '<label for="numberPeople">Ticket for:</label>' +
+            '</div>' +
+            '<div class="col-6">' +
+                '<input type="number" onchange="markAsUpdate(this)" class="form-control" id="numberPeople" placeholder="No. People" min="1" step="1" required />' +
+           ' </div>' +
         '</div>' +
     '</div>' +
+    '</div>' +
     '</li>'
+}
+
+function checkInputs() {
+    const attracNameField = document.getElementById("attrac_name");
+    const attracNameValue = attracNameField.value.trim();
+
+    if (attracNameValue == null || attracNameValue == "") {
+        showErrorMessage("Please complete all the mandatory fields!");
+        attracNameField.style.border = "1px solid red";
+        return false;
+    }
+
+    // Check if attraction image source is empty or default "no image found" source
+    let imageSrc = "";
+    if (attractImageSrc && attractImageSrc !== "https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg") {
+        imageSrc = attractImageSrc;
+    }
+
+    // Get ticket information
+    const ticketList = [];
+    const ticketItems = $("#ticketsToAdd li");
+    ticketItems.each(function (i) {
+        const nameField = document.getElementById(`ticketName${i}`);
+        const nameValue = nameField.value.trim();
+        const personField = document.getElementById(`ticketPersons${i}`);
+        const personValue = personField.value.trim();
+
+        if (nameValue != '' && personValue != '') {
+            ticketList.push({
+                name: ticketNameValue,
+                persons: parseInt(ticketPersonsValue)
+            });
+        }
+    });
+
+    console.table(ticketList);
+
+    // Make ajax request
+    //$.ajax({
+    //    url: "/newAttraction",
+    //    type: "POST",
+    //    contentType: "application/json",
+    //    data: JSON.stringify({
+    //        name: attracNameValue,
+    //        imageSrc: imageSrc,
+    //        tickets: ticketList
+    //    }),
+    //    success: function (data) {
+    //        console.log(data);
+    //    },
+    //    error: function (xhr, status, error) {
+    //        console.error(error);
+    //    }
+    //});
+
+    return true;
+}
+
+function removeTicket(index){
+    var parent = index.parentNode.parentNode.parentNode;
+    //if the id does not contain '_n' we hide the parent node, otherwise we remove it
+    if(!parent.id.includes('_n'))
+    {
+        if(!parent.id.includes('_d') && !parent.id.includes('_u'))
+            parent.id += '_d';
+        else if(parent.id.includes('_u'))
+            parent.id = parent.id.replace('_u', '_d');
+
+        parent.style.display = 'none';
+    }
+    else
+        parent.remove();
+}
+
+function createAttraction() {
+    var name = document.getElementById("name").value;
+    var description = document.getElementById("description").value;
+    var imageURL = document.getElementById("imageURL").value;
+    //var imageFile = document.getElementById("imageFile").value;
+    var lat = marker._latlng.lat;
+    var lng = marker._latlng.lng;
+
+    var attraction = {
+        name: name,
+        description: description,
+        imageURL: imageURL,
+        lat: lat,
+        lng: lng
+    };
+
+    $.ajax({
+        url: '/api/attractions',
+        type: 'POST',
+        data: JSON.stringify(attraction),
+        contentType: 'application/json',
+        success: function(data) {
+            console.log(data);
+        }
+    });
 }

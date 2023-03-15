@@ -20,6 +20,7 @@
     <meta name="description" content="" />
 
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="js/loadCommon.js"></script>
 
     <!-- Favicon -->
@@ -48,6 +49,7 @@
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/scrollbars.css" />
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
@@ -196,8 +198,8 @@
                         <div class="row">
                           <div class="col-md-6">
                             <div class="col mb-2">
-                              <label class="form-label" for="tripDescription">Attraction Name <span class="red">*</span></label>
-                              <input type="text" class="form-control" id="tripDescription" />
+                              <label class="form-label" for="attrac_name">Attraction Name <span class="red">*</span></label>
+                              <input type="text" class="form-control" id="attrac_name" />
                             </div>
                         
                             <div class="col mb-2">
@@ -225,28 +227,31 @@
                         </div>
 
                         <!--! A description/note field could be added (this also needs to be created in the dabatase)-->
-
-                        <!--! Eventually add a leaflet or google maps, map, that allows the user to set the location of the attraction -->
-                        <label for="map" class="form-label">Attraction Location</label>
-                        <div id="map" class="mb-4"></div>
-
-                        <!--! Add a new checkbox field asking "Has tickets"-->
-                        <div class="col-md-6" style="padding-bottom: 20px;">
-                          <label for="ticketsToAdd" class="form-label">Attraction Tickets</label>
-                          <div class="demo-inline-spacing mt-3">
-                            <ul id="ticketsToAdd" class="list-group customScroll hoverable">
-                              <!--! Flights loaded from DB go here -->         
-                            </ul>
+                        
+                        <div class="row">
+                          <!--! Add a new checkbox field asking "Has tickets"-->
+                          <div class="col" style="padding-bottom: 20px;">
+                            <label for="ticketsToAdd" class="form-label">Attraction Tickets</label>
+                            <div class="demo-inline-spacing mt-3">
+                              <ul id="ticketsToAdd" class="list-group customScroll hoverable">
+                                <!--! Tickets loaded from DB go here -->
+                              </ul>
+                            </div>
+                          </div>
+                        
+                          <!--! Eventually add a leaflet or google maps, map, that allows the user to set the location of the attraction -->
+                          <div class="col-md-8">
+                            <label for="map" class="form-label">Attraction Location</label>
+                            <div id="map" class="col-md-4"></div>
                           </div>
                         </div>
+
+                        <input id="addTickets" type="button" onclick="addNewTicket();" class="btn btn-primary" value="Add Ticket"></input>
+                        
                         <!--! Add a new Tickets accordion containing ticket information, do the same as flights-->
 
                         <!--? Also allow the user to add an address as optional field, maybe -->
-                        <input id="addTickets" type="button" onclick="addNewTicket();" class="btn btn-primary" value="Add Ticket"></input>
-                        <div class="row mb-4">
-
-                        </div>
-                          <button type="button" onclick="checkInputs();" class="btn btn-primary">Create</button>
+                          <button type="button" onclick="checkInputs();" class="btn btn-primary">Create Attraction</button>
                       </form>
                     </div>
                   </div>
