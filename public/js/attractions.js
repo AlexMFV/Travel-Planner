@@ -37,7 +37,9 @@ function loadImageURL(){
 }
 
 function addNewTicket() {
-    $('#ticketsToAdd').append(ticketElement(1, "Test", "ticket", null, null));
+    $('#ticketsToAdd').append(
+        ticketElement(document.getElementById("ticketsToAdd").childElementCount, null, "_n", null, null)
+    );
 }
 
 function createTicketElement(ticket){
@@ -53,13 +55,10 @@ function ticketElement(id, text, type, date, noPeople){
     if(noPeople != null)
          value = "value='" + noPeople + "'";
 
-    //Get number of childs in list "ticketsToAdd"
-    var num = document.getElementById("ticketsToAdd").childElementCount;
-
     return '<li class="list-group-item themedd" id="' + id + type + '">' +
     '<div class="row" style="padding-bottom: 10px;">' +
         '<div class="col-md-9" style="align-self:center; font-size:large;">' +
-            '<input type="text" class="form-control" placeholder="Ticket title" id="ticketName' + num + '">' +
+            '<input type="text" class="form-control" placeholder="Ticket title" id="ticketName">' +
         '</div>' +
         '<div class="col-md-3">' +
             '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeTicket(this)">' +
@@ -91,6 +90,12 @@ function ticketElement(id, text, type, date, noPeople){
     '</li>'
 }
 
+function markAsUpdate(id){
+    var parent = id.parentNode.parentNode.parentNode;
+    if(!parent.id.includes('_u') && !parent.id.includes('_n'))
+        parent.id += '_u';
+}
+
 function checkInputs() {
     const attracNameField = document.getElementById("attrac_name");
     const attracNameValue = attracNameField.value.trim();
@@ -103,25 +108,20 @@ function checkInputs() {
 
     // Check if attraction image source is empty or default "no image found" source
     let imageSrc = "";
+    const attractImageSrc = document.getElementById("attractImage").src;
     if (attractImageSrc && attractImageSrc !== "https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg") {
         imageSrc = attractImageSrc;
     }
 
     // Get ticket information
     const ticketList = [];
-    const ticketItems = $("#ticketsToAdd li");
-    ticketItems.each(function (i) {
-        const nameField = document.getElementById(`ticketName${i}`);
-        const nameValue = nameField.value.trim();
-        const personField = document.getElementById(`ticketPersons${i}`);
-        const personValue = personField.value.trim();
-
-        if (nameValue != '' && personValue != '') {
-            ticketList.push({
-                name: ticketNameValue,
-                persons: parseInt(ticketPersonsValue)
-            });
-        }
+    $('#ticketsToAdd>.list-group-item').each(function(index, element){
+        var ticket = {
+            id: element.id,
+            name: $(element).find('#ticketName').val(),
+            number: $(element).find('#numberPeople').val() === '' ? 0 : $(element).find('#numberPeople').val()
+        };
+        ticketList.push(ticket);
     });
 
     console.table(ticketList);
