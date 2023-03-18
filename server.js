@@ -46,6 +46,7 @@ app.post('/checkCookie', checkCookie);
 app.post('/newTrip', createTrip);
 app.post('/newFlight', createFlight);
 app.post('/newTripFlight', createTripFlight);
+app.post("/newAttraction", createAttraction);
 
 /* GET REQUESTS */
 app.get('/allTrips', getAllTrips);
@@ -184,6 +185,39 @@ async function createTripFlight(req, res) {
     res.json(true);
   }
   catch (e) {
+    error(res, e);
+  }
+}
+
+async function createAttraction(req, res) {
+  try {
+    // Get data from the request body
+    const name = req.body.name;
+    const imageSrc = req.body.imageSrc;
+    const hasTickets = req.body.hasTickets ? 1 : 0;
+    const noTicketPrice = req.body.noTicketPrice;
+    const lat = req.body.lat;
+    const lng = req.body.lng;
+    const tickets = req.body.tickets;
+    const codcountry = req.body.country;
+
+    // Add the attraction to the database
+    const attractionId = await db.createAttraction(codcountry, name, hasTickets, noTicketPrice, imageSrc, lat, lng);
+
+    if (attractionId != null)
+    {
+      // Add tickets for the attraction to the database
+      for (const ticket of tickets) {
+        await db.createTicket(attractionId, ticket.name, ticket.number);
+      }
+
+      // Return the created attraction ID
+      res.json(true);
+      return;
+    }
+
+    res.json(false);
+  } catch (e) {
     error(res, e);
   }
 }

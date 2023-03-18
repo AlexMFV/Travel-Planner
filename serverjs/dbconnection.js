@@ -119,6 +119,32 @@ async function createTripFlight(codtrip, codflight, date, value){
     }
 }
 
+async function createAttraction(codcountry, name, hasTicket, price, imageRef, latitude, longitude) {
+    try {
+        let row = await callProcedureFirstRow('createAttraction', [codcountry, name, hasTicket, price, imageRef, latitude, longitude]);
+        querylog("createAttraction");
+        console.log(row);
+        return (row != undefined && row.attracId != undefined) ? row.attracId : null;
+    }
+    catch(e){
+        return null;
+    }
+}
+
+async function createTicket(codattrac, desc, npeople){
+    try {
+        let numRows = await callProcedureNonQuery('createTicket', [codattrac, desc, npeople]);
+        querylog("createTicket");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
 async function getAllTrips(){
     let rows = await callProcedureRows('getAllTrips', []);
     querylog("getAllTrips");
@@ -215,8 +241,14 @@ async function callProcedureRows(name, parameters){
  * @returns First row returned from the database (JSON format)
  */
 async function callProcedureFirstRow(name, parameters){
-    let [rows] = await con.promise().query(formatQuery(name, parameters));
-    return rows[0][0];
+    try{
+        let [rows] = await con.promise().query(formatQuery(name, parameters));
+        return rows[0][0];
+    }
+    catch(error){
+        console.log("callProcedureFirstRow (" + name + ") | Error: " + error);
+        return undefined;
+    }
 }
 
 /**
@@ -241,4 +273,4 @@ module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredC
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
     getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight,
     getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight, getMonthlyFlightReportByYear,
-    updateTripFlight, getTripInfo }
+    updateTripFlight, getTripInfo, createAttraction, createTicket }

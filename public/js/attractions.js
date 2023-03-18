@@ -96,14 +96,18 @@ function markAsUpdate(id){
         parent.id += '_u';
 }
 
-function checkInputs() {
+async function checkInputs() {
     const attracNameField = document.getElementById("attrac_name");
     const attracNameValue = attracNameField.value.trim();
+    const countryValue = document.getElementById("countrySelect").value;
 
+    let missingValues = false;
+
+    attracNameField.style.border = "1px solid #d9dee3";
     if (attracNameValue == null || attracNameValue == "") {
         showErrorMessage("Please complete all the mandatory fields!");
         attracNameField.style.border = "1px solid red";
-        return false;
+        missingValues = true;
     }
 
     // Check if attraction image source is empty or default "no image found" source
@@ -116,33 +120,72 @@ function checkInputs() {
     // Get ticket information
     const ticketList = [];
     $('#ticketsToAdd>.list-group-item').each(function(index, element){
+        $(element).find('#ticketName').css("border", "1px solid #d9dee3"); //clean up the border
+        $(element).find('#numberPeople').css("border", "1px solid #d9dee3"); //clean up the border
+
         var ticket = {
-            id: element.id,
             name: $(element).find('#ticketName').val(),
             number: $(element).find('#numberPeople').val() === '' ? 0 : $(element).find('#numberPeople').val()
         };
+
+        if(ticket.name == '')
+        {
+            $(element).find('#ticketName').css("border", "1px solid red");
+            missingValues = true;
+        }
+
+        if(ticket.number == 0)
+        {
+            $(element).find('#numberPeople').css("border", "1px solid red");
+            missingValues = true;
+        }
+
         ticketList.push(ticket);
     });
 
-    console.table(ticketList);
+    if(missingValues)
+    {
+        showErrorMessage("Please complete all the mandatory fields!");
+        return false;
+    }
 
-    // Make ajax request
-    //$.ajax({
-    //    url: "/newAttraction",
-    //    type: "POST",
-    //    contentType: "application/json",
-    //    data: JSON.stringify({
-    //        name: attracNameValue,
-    //        imageSrc: imageSrc,
-    //        tickets: ticketList
-    //    }),
-    //    success: function (data) {
-    //        console.log(data);
-    //    },
-    //    error: function (xhr, status, error) {
-    //        console.error(error);
-    //    }
-    //});
+    var imageURL = document.getElementById("imageURL").value;
+    var hasTickets = ticketList.length > 0;
+    var price = 0; //This should be the price of the attraction apart from ticket prices like entry, maybe we can remove it and use tickets as entry or something
+
+    //if marker exists, change the values to the new ones, else make them 0
+    var newLat = 0;
+    var newLng = 0;
+    if (marker != null) {
+        newLat = marker.getLatLng().lat;
+        newLng = marker.getLatLng().lng;
+    }
+
+    //Make ajax request to add the main attraction
+    await $.ajax({
+        url: "/newAttraction",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            name: attracNameValue,
+            country: countryValue,
+            imageSrc: imageSrc,
+            hasTickets: hasTickets,
+            noTicketPrice: price,
+            lat: newLat,
+            lng: newLng,
+            tickets: ticketList,
+        }),
+        success: function (data) {
+            if (data != undefined && data)
+                redirectSuccess();
+            else
+                showErrorMessage("Error adding attraction!");
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
 
     return true;
 }
@@ -161,31 +204,4 @@ function removeTicket(index){
     }
     else
         parent.remove();
-}
-
-function createAttraction() {
-    var name = document.getElementById("name").value;
-    var description = document.getElementById("description").value;
-    var imageURL = document.getElementById("imageURL").value;
-    //var imageFile = document.getElementById("imageFile").value;
-    var lat = marker._latlng.lat;
-    var lng = marker._latlng.lng;
-
-    var attraction = {
-        name: name,
-        description: description,
-        imageURL: imageURL,
-        lat: lat,
-        lng: lng
-    };
-
-    $.ajax({
-        url: '/api/attractions',
-        type: 'POST',
-        data: JSON.stringify(attraction),
-        contentType: 'application/json',
-        success: function(data) {
-            console.log(data);
-        }
-    });
 }
