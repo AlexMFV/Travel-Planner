@@ -163,6 +163,12 @@ async function getAllFlights(){
     return rows;
 }
 
+async function getAllAttractions(){
+    let rows = await callProcedureRows('getAllAttractions', []);
+    querylog("getAllAttractions");
+    return rows;
+}
+
 async function getCountriesEssencial(){
     let rows = await callProcedureRows('getCountriesEssencial', []);
     querylog("getCountriesEssencial");
@@ -273,4 +279,4 @@ module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredC
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
     getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight,
     getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight, getMonthlyFlightReportByYear,
-    updateTripFlight, getTripInfo, createAttraction, createTicket }
+    updateTripFlight, getTripInfo, createAttraction, createTicket, getAllAttractions }

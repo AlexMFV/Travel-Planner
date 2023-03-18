@@ -52,6 +52,7 @@ app.post("/newAttraction", createAttraction);
 app.get('/allTrips', getAllTrips);
 app.get('/allCountries', getAllCountries);
 app.get('/allFlights', getAllFlights);
+app.get('/allAttractions', getAllAttractions);
 app.get('/countriesEssencial', getCountriesEssencial);
 app.get('/allTripFlights', getAllTripFlights);
 app.post('/monthlyFlightReportByYear', getMonthlyFlightReportByYear);
@@ -268,6 +269,16 @@ async function getAllFlights(req, res) {
   try {
     const flights = await db.getAllFlights();
     res.json(JSON.stringify(flights));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAllAttractions(req, res) {
+  try {
+    const attractions = await db.getAllAttractions();
+    res.json(JSON.stringify(attractions));
   }
   catch (e) {
     error(res, e);

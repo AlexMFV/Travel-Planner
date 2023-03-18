@@ -181,6 +181,22 @@ async function getAllFlights() {
     });
 }
 
+async function getAllAttractions() {
+    await $.ajax({
+        type: 'GET',
+        url: '/allAttractions',
+        data: {},
+        success: function (data) {
+            if (data != null && data != undefined) {
+                glob.attractions = JSON.parse(data);
+            }
+        },
+        error: function (data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
+}
+
 async function getAllCountries() {
     await $.ajax({
         type: 'GET',
@@ -252,6 +268,11 @@ async function loadTrips(){
 async function loadFlights(){
     await getAllFlights();
     forceReloadTable("listTable", glob.flights);
+}
+
+async function loadAttractions(){
+    await getAllAttractions();
+    forceReloadTable("listTable", glob.attractions);
 }
 
 async function loadTripInfo(){
