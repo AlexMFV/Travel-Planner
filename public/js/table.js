@@ -110,10 +110,14 @@ function attractionsTable() {
     return {
         data: glob.attractions,
         columns: [
+            { data: null, render: function ( data, type, row ) {
+                return '<a href="/editattraction.html?id=' + row.id + '" class="btn btn-outline-primary">Edit</a>'
+            } },
             { data: 'name', title: 'Attraction Name', "defaultContent": 'No data' ,render: (data, type, row) => { return '<strong>' + row.name + '</strong>' } },
             { data: 'country_name', title: 'Country', "defaultContent": 'No data' , render: function (data, type, row) { return '<strong>' + row.country_name + '</strong>' } },
             { data: 'price', title: 'Price', "defaultContent": 'No data' , render: function (data, type, row) { return row.price; } },
             { data: 'num_tickets', title: 'Number of Tickets', "defaultContent": 'No data' , render: function (data, type, row) { return row.num_tickets; } }
+            //Maybe add latitude and longitude, these also need to come from the database
         ],
         "order": 1
     }

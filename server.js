@@ -57,6 +57,8 @@ app.get('/countriesEssencial', getCountriesEssencial);
 app.get('/allTripFlights', getAllTripFlights);
 app.post('/monthlyFlightReportByYear', getMonthlyFlightReportByYear);
 app.get('/getTripInfo', getTripInfo);
+app.get('/getAttracInfo', getAttractionInfo);
+app.get('/getAttracTickets', getAttractionTickets);
 
 /* DELETE REQUESTS */
 app.post('/deleteTripFlight', deleteTripFlight);
@@ -237,6 +239,28 @@ async function getTripInfo(req, res) {
   try {
     const id = req.query.id;
     const info = await db.getTripInfo(id);
+    res.json(JSON.stringify(info));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAttractionInfo(req, res) {
+  try {
+    const id = req.query.id;
+    const info = await db.getAttracInfo(id);
+    res.json(JSON.stringify(info));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAttractionTickets(req, res) {
+  try {
+    const id = req.query.id;
+    const info = await db.getAttracTickets(id);
     res.json(JSON.stringify(info));
   }
   catch (e) {

@@ -193,6 +193,18 @@ async function getTripInfo(tripId){
     return row;
 }
 
+async function getAttracInfo(tripId){
+    let row = await callProcedureFirstRow('getAttracInfo', [tripId]);
+    querylog("getAttracInfo");
+    return row;
+}
+
+async function getAttracTickets(tripId){
+    let row = await callProcedureFirstRow('getAttracTickets', [tripId]);
+    querylog("getAttracTickets");
+    return row;
+}
+
 async function getMonthlyFlightReportByYear(year){
     let rows = await callProcedureRows('getMonthlyFlightReportByYear', [year]);
     querylog("getMonthlyFlightReportByYear");
@@ -279,4 +291,5 @@ module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredC
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
     getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight,
     getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight, getMonthlyFlightReportByYear,
-    updateTripFlight, getTripInfo, createAttraction, createTicket, getAllAttractions }
+    updateTripFlight, getTripInfo, createAttraction, createTicket, getAllAttractions, getAttracInfo,
+    getAttracTickets }

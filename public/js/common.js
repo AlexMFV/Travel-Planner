@@ -329,6 +329,20 @@ async function loadCountriesToList(listId){
     await addDataToListGeneric(listId, values, ids);
 }
 
+async function loadCountriesToList(listId, defaultId){
+    await getCountriesEssencial();
+
+    var ids = []
+    var values = []
+
+    await glob.loc_countries.forEach((value) => {
+        ids.push(value.codcountry);
+        values.push(value.name);
+    });
+
+    await addDataToListGeneric(listId, values, ids, defaultId);
+}
+
 async function addDataToListGeneric(listId, data, ids){
     const list = document.getElementById(listId);
     list.innerHTML = "";
@@ -341,6 +355,24 @@ async function addDataToListGeneric(listId, data, ids){
     });
 
     list.selectedIndex = 0;
+    
+    dselect(list, {
+        search: true
+    });
+}
+
+async function addDataToListGeneric(listId, data, ids, defaultId){
+    const list = document.getElementById(listId);
+    list.innerHTML = "";
+
+    data.forEach((value, idx) => {
+        const option = document.createElement("option");
+        option.innerHTML = value;
+        option.value = ids[idx];
+        list.add(option);
+    });
+
+    list.selectedIndex = defaultId;
     
     dselect(list, {
         search: true
