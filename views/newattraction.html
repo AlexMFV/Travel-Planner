@@ -61,9 +61,10 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="./bootstrap/assets/js/config.js"></script>
+    <script src="js/custom/dselect.js"></script>
   </head>
 
-  <body>
+  <body onload="loadCountriesToList('countrySelect')">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -216,6 +217,13 @@
                               <label for="formFile" class="form-label">Add Image File</label>
                               <input class="form-control" type="file" id="formFile" disabled>
                             </div>
+
+                            <div class="col-md-6" style="padding-bottom: 20px; margin-top: 20px;">
+                              <label for="countrySelect" class="form-label">Country <span class="red">*</span></label>
+                              <select class="form-select" id="countrySelect">
+                                <option value="321">Loading...</option>
+                              </select>
+                            </div>
                           </div>
                         
                           <div class="col mb-4">
@@ -283,6 +291,7 @@
     <!-- / Layout wrapper -->
 
     <!-- Optional JavaScript -->
+    <script src="js/glob.js"></script>
     <script src="js/leaflet-search.js"></script>
     <script src="js/common.js"></script>
     <script src="js/attractions.js"></script>

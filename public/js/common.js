@@ -294,6 +294,38 @@ async function loadCountryLists(){
     await addDataToList("country_to", values, ids);
 }
 
+async function loadCountriesToList(listId){
+    await getCountriesEssencial();
+
+    var ids = []
+    var values = []
+
+    await glob.loc_countries.forEach((value) => {
+        ids.push(value.codcountry);
+        values.push(value.name);
+    });
+
+    await addDataToListGeneric(listId, values, ids);
+}
+
+async function addDataToListGeneric(listId, data, ids){
+    const list = document.getElementById(listId);
+    list.innerHTML = "";
+
+    data.forEach((value, idx) => {
+        const option = document.createElement("option");
+        option.innerHTML = value;
+        option.value = ids[idx];
+        list.add(option);
+    });
+
+    list.selectedIndex = 0;
+    
+    dselect(list, {
+        search: true
+    });
+}
+
 async function addDataToList(listId, data, ids){
     const list = document.getElementById(listId);
     list.innerHTML = "";

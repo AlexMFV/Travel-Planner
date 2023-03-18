@@ -37,7 +37,9 @@ function loadImageURL(){
 }
 
 function addNewTicket() {
-    $('#ticketsToAdd').append(ticketElement(1, "Test", "ticket", null, null));
+    $('#ticketsToAdd').append(
+        ticketElement(document.getElementById("ticketsToAdd").childElementCount, null, "_n", null, null)
+    );
 }
 
 function createTicketElement(ticket){
@@ -53,13 +55,10 @@ function ticketElement(id, text, type, date, noPeople){
     if(noPeople != null)
          value = "value='" + noPeople + "'";
 
-    //Get number of childs in list "ticketsToAdd"
-    var num = document.getElementById("ticketsToAdd").childElementCount;
-
     return '<li class="list-group-item themedd" id="' + id + type + '">' +
     '<div class="row" style="padding-bottom: 10px;">' +
         '<div class="col-md-9" style="align-self:center; font-size:large;">' +
-            '<input type="text" class="form-control" placeholder="Ticket title" id="ticketName' + num + '">' +
+            '<input type="text" class="form-control" placeholder="Ticket title" id="ticketName">' +
         '</div>' +
         '<div class="col-md-3">' +
             '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeTicket(this)">' +
@@ -91,58 +90,102 @@ function ticketElement(id, text, type, date, noPeople){
     '</li>'
 }
 
-function checkInputs() {
+function markAsUpdate(id){
+    var parent = id.parentNode.parentNode.parentNode;
+    if(!parent.id.includes('_u') && !parent.id.includes('_n'))
+        parent.id += '_u';
+}
+
+async function checkInputs() {
     const attracNameField = document.getElementById("attrac_name");
     const attracNameValue = attracNameField.value.trim();
+    const countryValue = document.getElementById("countrySelect").value;
 
+    let missingValues = false;
+
+    attracNameField.style.border = "1px solid #d9dee3";
     if (attracNameValue == null || attracNameValue == "") {
         showErrorMessage("Please complete all the mandatory fields!");
         attracNameField.style.border = "1px solid red";
-        return false;
+        missingValues = true;
     }
 
     // Check if attraction image source is empty or default "no image found" source
     let imageSrc = "";
+    const attractImageSrc = document.getElementById("attractImage").src;
     if (attractImageSrc && attractImageSrc !== "https://www.ncenet.com/wp-content/uploads/2020/04/No-image-found.jpg") {
         imageSrc = attractImageSrc;
     }
 
     // Get ticket information
     const ticketList = [];
-    const ticketItems = $("#ticketsToAdd li");
-    ticketItems.each(function (i) {
-        const nameField = document.getElementById(`ticketName${i}`);
-        const nameValue = nameField.value.trim();
-        const personField = document.getElementById(`ticketPersons${i}`);
-        const personValue = personField.value.trim();
+    $('#ticketsToAdd>.list-group-item').each(function(index, element){
+        $(element).find('#ticketName').css("border", "1px solid #d9dee3"); //clean up the border
+        $(element).find('#numberPeople').css("border", "1px solid #d9dee3"); //clean up the border
 
-        if (nameValue != '' && personValue != '') {
-            ticketList.push({
-                name: ticketNameValue,
-                persons: parseInt(ticketPersonsValue)
-            });
+        var ticket = {
+            name: $(element).find('#ticketName').val(),
+            number: $(element).find('#numberPeople').val() === '' ? 0 : $(element).find('#numberPeople').val()
+        };
+
+        if(ticket.name == '')
+        {
+            $(element).find('#ticketName').css("border", "1px solid red");
+            missingValues = true;
         }
+
+        if(ticket.number == 0)
+        {
+            $(element).find('#numberPeople').css("border", "1px solid red");
+            missingValues = true;
+        }
+
+        ticketList.push(ticket);
     });
 
-    console.table(ticketList);
+    if(missingValues)
+    {
+        showErrorMessage("Please complete all the mandatory fields!");
+        return false;
+    }
 
-    // Make ajax request
-    //$.ajax({
-    //    url: "/newAttraction",
-    //    type: "POST",
-    //    contentType: "application/json",
-    //    data: JSON.stringify({
-    //        name: attracNameValue,
-    //        imageSrc: imageSrc,
-    //        tickets: ticketList
-    //    }),
-    //    success: function (data) {
-    //        console.log(data);
-    //    },
-    //    error: function (xhr, status, error) {
-    //        console.error(error);
-    //    }
-    //});
+    var imageURL = document.getElementById("imageURL").value;
+    var hasTickets = ticketList.length > 0;
+    var price = 0; //This should be the price of the attraction apart from ticket prices like entry, maybe we can remove it and use tickets as entry or something
+
+    //if marker exists, change the values to the new ones, else make them 0
+    var newLat = 0;
+    var newLng = 0;
+    if (marker != null) {
+        newLat = marker.getLatLng().lat;
+        newLng = marker.getLatLng().lng;
+    }
+
+    //Make ajax request to add the main attraction
+    await $.ajax({
+        url: "/newAttraction",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            name: attracNameValue,
+            country: countryValue,
+            imageSrc: imageSrc,
+            hasTickets: hasTickets,
+            noTicketPrice: price,
+            lat: newLat,
+            lng: newLng,
+            tickets: ticketList,
+        }),
+        success: function (data) {
+            if (data != undefined && data)
+                redirectSuccess();
+            else
+                showErrorMessage("Error adding attraction!");
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
+        }
+    });
 
     return true;
 }
@@ -161,31 +204,4 @@ function removeTicket(index){
     }
     else
         parent.remove();
-}
-
-function createAttraction() {
-    var name = document.getElementById("name").value;
-    var description = document.getElementById("description").value;
-    var imageURL = document.getElementById("imageURL").value;
-    //var imageFile = document.getElementById("imageFile").value;
-    var lat = marker._latlng.lat;
-    var lng = marker._latlng.lng;
-
-    var attraction = {
-        name: name,
-        description: description,
-        imageURL: imageURL,
-        lat: lat,
-        lng: lng
-    };
-
-    $.ajax({
-        url: '/api/attractions',
-        type: 'POST',
-        data: JSON.stringify(attraction),
-        contentType: 'application/json',
-        success: function(data) {
-            console.log(data);
-        }
-    });
 }
