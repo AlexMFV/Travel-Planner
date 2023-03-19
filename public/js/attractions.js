@@ -42,14 +42,6 @@ function addNewTicket() {
     );
 }
 
-function createTicketElement(ticket){
-    var icon = '<i class="fas fa-plane" style="padding-left: 10px; padding-right: 10px;"></i>';
-
-    $('#selectedTickets').append(
-        //ticketElement(ticket.codtripflight, flight.fromName + icon + flight.toName, '', formatDate(flight.date) , flight.value)
-    );
-}
-
 function ticketElement(id, text, type, date, noPeople){    
     var value = "";
     if(noPeople != null)
@@ -61,20 +53,11 @@ function ticketElement(id, text, type, date, noPeople){
             '<input type="text" class="form-control" placeholder="Ticket title" id="ticketName">' +
         '</div>' +
         '<div class="col-md-3">' +
-            '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeTicket(this)">' +
+            '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeEntry(this)">' +
             '<i class="fas fa-times"></i>' +
             '</button>' +
         '</div>' +
     '</div>' +
-
-    //'<div class="row">' +
-    //    '<div class="col-md-5">' +
-    //        'Ticket for:' +
-    //        '<input type="number" onchange="markAsUpdate(this)" class="form-control" id="numberPeople"' + value + 'placeholder="No. People" min="1" step="1" required />' +
-    //        //' person/people' +
-    //    '</div>' +
-    //'</div>' +
-
     '<div class="row">' +
     '<div class="col-md-12">' +
         '<div class="row">' +
@@ -91,7 +74,7 @@ function ticketElement(id, text, type, date, noPeople){
 }
 
 function markAsUpdate(id){
-    var parent = id.parentNode.parentNode.parentNode;
+    var parent = id.parentNode.parentNode.parentNode.parentNode.parentNode;
     if(!parent.id.includes('_u') && !parent.id.includes('_n'))
         parent.id += '_u';
 }
@@ -188,20 +171,4 @@ async function checkInputs() {
     });
 
     return true;
-}
-
-function removeTicket(index){
-    var parent = index.parentNode.parentNode.parentNode;
-    //if the id does not contain '_n' we hide the parent node, otherwise we remove it
-    if(!parent.id.includes('_n'))
-    {
-        if(!parent.id.includes('_d') && !parent.id.includes('_u'))
-            parent.id += '_d';
-        else if(parent.id.includes('_u'))
-            parent.id = parent.id.replace('_u', '_d');
-
-        parent.style.display = 'none';
-    }
-    else
-        parent.remove();
 }

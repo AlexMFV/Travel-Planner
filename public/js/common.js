@@ -422,3 +422,19 @@ async function selectedIdChanged(){
 function formatDate(date){
     return new Date(date).toISOString().slice(0,10);
 }
+
+function removeEntry(index){
+    var parent = index.parentNode.parentNode.parentNode;
+    //if the id does not contain '_n' we hide the parent node, otherwise we remove it
+    if(!parent.id.includes('_n'))
+    {
+        if(!parent.id.includes('_d') && !parent.id.includes('_u'))
+            parent.id += '_d';
+        else if(parent.id.includes('_u'))
+            parent.id = parent.id.replace('_u', '_d');
+
+        parent.style.display = 'none';
+    }
+    else
+        parent.remove();
+}

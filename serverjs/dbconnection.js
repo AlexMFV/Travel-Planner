@@ -131,6 +131,20 @@ async function createAttraction(codcountry, name, hasTicket, price, imageRef, la
     }
 }
 
+async function updateAttraction(id, codcountry, name, hasTicket, price, imageRef, latitude, longitude){
+    try {
+        let numRows = await callProcedureNonQuery('updateAttraction', [id, codcountry, name, hasTicket, price, imageRef, latitude, longitude]);
+        querylog("updateAttraction");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
 async function createTicket(codattrac, desc, npeople){
     try {
         let numRows = await callProcedureNonQuery('createTicket', [codattrac, desc, npeople]);
@@ -139,6 +153,30 @@ async function createTicket(codattrac, desc, npeople){
         if (numRows == 1)
             return true;
         return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
+async function updateTicket(codticket, name, npeople){
+    try {
+        let numRows = await callProcedureNonQuery('updateTicket', [codticket, name, npeople]);
+        querylog("updateTicket");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
+async function deleteTicket(codticket){
+    try {
+        let row = await callProcedureNonQuery('deleteTicket', [codticket]);
+        querylog("deleteTicket");
     }
     catch(e){
         return false;
@@ -200,9 +238,9 @@ async function getAttracInfo(tripId){
 }
 
 async function getAttracTickets(tripId){
-    let row = await callProcedureFirstRow('getAttracTickets', [tripId]);
+    let rows = await callProcedureRows('getAttracTickets', [tripId]);
     querylog("getAttracTickets");
-    return row;
+    return rows;
 }
 
 async function getMonthlyFlightReportByYear(year){
@@ -292,4 +330,4 @@ module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredC
     getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight,
     getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight, getMonthlyFlightReportByYear,
     updateTripFlight, getTripInfo, createAttraction, createTicket, getAllAttractions, getAttracInfo,
-    getAttracTickets }
+    getAttracTickets, updateTicket, deleteTicket, updateAttraction }
