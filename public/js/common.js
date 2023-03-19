@@ -181,6 +181,22 @@ async function getAllFlights() {
     });
 }
 
+async function getAllAttractions() {
+    await $.ajax({
+        type: 'GET',
+        url: '/allAttractions',
+        data: {},
+        success: function (data) {
+            if (data != null && data != undefined) {
+                glob.attractions = JSON.parse(data);
+            }
+        },
+        error: function (data) {
+            showErrorMessage(data.responseJSON);
+        }
+    });
+}
+
 async function getAllCountries() {
     await $.ajax({
         type: 'GET',
@@ -254,6 +270,11 @@ async function loadFlights(){
     forceReloadTable("listTable", glob.flights);
 }
 
+async function loadAttractions(){
+    await getAllAttractions();
+    forceReloadTable("listTable", glob.attractions);
+}
+
 async function loadTripInfo(){
     const id = getSearchParam("id");
 
@@ -308,6 +329,20 @@ async function loadCountriesToList(listId){
     await addDataToListGeneric(listId, values, ids);
 }
 
+async function loadCountriesToList(listId, defaultId){
+    await getCountriesEssencial();
+
+    var ids = []
+    var values = []
+
+    await glob.loc_countries.forEach((value) => {
+        ids.push(value.codcountry);
+        values.push(value.name);
+    });
+
+    await addDataToListGeneric(listId, values, ids, defaultId);
+}
+
 async function addDataToListGeneric(listId, data, ids){
     const list = document.getElementById(listId);
     list.innerHTML = "";
@@ -320,6 +355,24 @@ async function addDataToListGeneric(listId, data, ids){
     });
 
     list.selectedIndex = 0;
+    
+    dselect(list, {
+        search: true
+    });
+}
+
+async function addDataToListGeneric(listId, data, ids, defaultId){
+    const list = document.getElementById(listId);
+    list.innerHTML = "";
+
+    data.forEach((value, idx) => {
+        const option = document.createElement("option");
+        option.innerHTML = value;
+        option.value = ids[idx];
+        list.add(option);
+    });
+
+    list.selectedIndex = defaultId;
     
     dselect(list, {
         search: true
@@ -368,4 +421,20 @@ async function selectedIdChanged(){
 
 function formatDate(date){
     return new Date(date).toISOString().slice(0,10);
+}
+
+function removeEntry(index){
+    var parent = index.parentNode.parentNode.parentNode;
+    //if the id does not contain '_n' we hide the parent node, otherwise we remove it
+    if(!parent.id.includes('_n'))
+    {
+        if(!parent.id.includes('_d') && !parent.id.includes('_u'))
+            parent.id += '_d';
+        else if(parent.id.includes('_u'))
+            parent.id = parent.id.replace('_u', '_d');
+
+        parent.style.display = 'none';
+    }
+    else
+        parent.remove();
 }

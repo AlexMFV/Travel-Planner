@@ -6,6 +6,7 @@ $(function (){
         case 'listtrip': options = tripsTable(); break;
         case 'countries': options = countriesTable(); break;
         case 'listflight': options = flightsTable(); break;
+        case 'listattractions': options = attractionsTable(); break;
         default: console.log("No table found"); break;
     }
 
@@ -97,6 +98,26 @@ function flightsTable() {
             { data: 'from_name', title: 'Flight Origin', "defaultContent": 'No data' ,render: (data, type, row) => { return '<strong>' + row.from_name + '</strong>' } },
             { data: 'to_name', title: 'Flight Destination', "defaultContent": 'No data' , render: function (data, type, row) { return '<strong>' + row.to_name + '</strong>' } },
             { data: 'duration', title: 'Flight Duration', "defaultContent": 'No data' , render: function (data, type, row) { return row.duration; } },
+        ],
+        "order": 1
+    }
+}
+
+function attractionsTable() {
+    if(glob.attractions == undefined || glob.attractions == null)
+        attractionsTable();
+
+    return {
+        data: glob.attractions,
+        columns: [
+            { data: null, render: function ( data, type, row ) {
+                return '<a href="/editattraction.html?id=' + row.id + '" class="btn btn-outline-primary">Edit</a>'
+            } },
+            { data: 'name', title: 'Attraction Name', "defaultContent": 'No data' ,render: (data, type, row) => { return '<strong>' + row.name + '</strong>' } },
+            { data: 'country_name', title: 'Country', "defaultContent": 'No data' , render: function (data, type, row) { return '<strong>' + row.country_name + '</strong>' } },
+            { data: 'price', title: 'Price', "defaultContent": 'No data' , render: function (data, type, row) { return row.price; } },
+            { data: 'num_tickets', title: 'Number of Tickets', "defaultContent": 'No data' , render: function (data, type, row) { return row.num_tickets; } }
+            //Maybe add latitude and longitude, these also need to come from the database
         ],
         "order": 1
     }

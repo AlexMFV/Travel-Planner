@@ -35,7 +35,7 @@ function flightElement(id, text, type, date, price){
             text +
         '</div>' +
         '<div class="col-md-3">' +
-            '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeFlight(this)">' +
+            '<button type="button" class="btndelete btn btn-sm btn-outline-light float-end" onclick="removeEntry(this)">' +
             '<i class="fas fa-times"></i>' +
             '</button>' +
         '</div>' +
@@ -54,22 +54,6 @@ function flightElement(id, text, type, date, price){
         '</div>' +
     '</div>' +
     '</li>'
-}
-
-function removeFlight(index){
-    var parent = index.parentNode.parentNode.parentNode;
-    //if the id does not contain '_n' we hide the parent node, otherwise we remove it
-    if(!parent.id.includes('_n'))
-    {
-        if(!parent.id.includes('_d') && !parent.id.includes('_u'))
-            parent.id += '_d';
-        else if(parent.id.includes('_u'))
-            parent.id = parent.id.replace('_u', '_d');
-
-        parent.style.display = 'none';
-    }
-    else
-        parent.remove();
 }
 
 function markAsUpdate(id){

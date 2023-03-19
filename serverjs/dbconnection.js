@@ -131,6 +131,20 @@ async function createAttraction(codcountry, name, hasTicket, price, imageRef, la
     }
 }
 
+async function updateAttraction(id, codcountry, name, hasTicket, price, imageRef, latitude, longitude){
+    try {
+        let numRows = await callProcedureNonQuery('updateAttraction', [id, codcountry, name, hasTicket, price, imageRef, latitude, longitude]);
+        querylog("updateAttraction");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
 async function createTicket(codattrac, desc, npeople){
     try {
         let numRows = await callProcedureNonQuery('createTicket', [codattrac, desc, npeople]);
@@ -139,6 +153,30 @@ async function createTicket(codattrac, desc, npeople){
         if (numRows == 1)
             return true;
         return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
+async function updateTicket(codticket, name, npeople){
+    try {
+        let numRows = await callProcedureNonQuery('updateTicket', [codticket, name, npeople]);
+        querylog("updateTicket");
+
+        if (numRows == 1)
+            return true;
+        return false;
+    }
+    catch(e){
+        return false;
+    }
+}
+
+async function deleteTicket(codticket){
+    try {
+        let row = await callProcedureNonQuery('deleteTicket', [codticket]);
+        querylog("deleteTicket");
     }
     catch(e){
         return false;
@@ -160,6 +198,12 @@ async function getAllCountries(){
 async function getAllFlights(){
     let rows = await callProcedureRows('getAllFlights', []);
     querylog("getAllFlights");
+    return rows;
+}
+
+async function getAllAttractions(){
+    let rows = await callProcedureRows('getAllAttractions', []);
+    querylog("getAllAttractions");
     return rows;
 }
 
@@ -185,6 +229,18 @@ async function getTripInfo(tripId){
     let row = await callProcedureFirstRow('getTripInfo', [tripId]);
     querylog("getTripInfo");
     return row;
+}
+
+async function getAttracInfo(tripId){
+    let row = await callProcedureFirstRow('getAttracInfo', [tripId]);
+    querylog("getAttracInfo");
+    return row;
+}
+
+async function getAttracTickets(tripId){
+    let rows = await callProcedureRows('getAttracTickets', [tripId]);
+    querylog("getAttracTickets");
+    return rows;
 }
 
 async function getMonthlyFlightReportByYear(year){
@@ -273,4 +329,5 @@ module.exports = { checkUserLogin, createUser, checkCookieExists, deleteExpiredC
     createCookie, getUserID, getCookieUUID, getUserByID, checkTripExists, createTrip,
     getAllTrips, getAllCountries, getCountriesEssencial, checkFlightExists, createFlight,
     getAllFlights, createTripFlight, getAllTripFlights, deleteTripFlight, getMonthlyFlightReportByYear,
-    updateTripFlight, getTripInfo, createAttraction, createTicket }
+    updateTripFlight, getTripInfo, createAttraction, createTicket, getAllAttractions, getAttracInfo,
+    getAttracTickets, updateTicket, deleteTicket, updateAttraction }

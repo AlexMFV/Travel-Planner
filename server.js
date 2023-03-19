@@ -47,21 +47,28 @@ app.post('/newTrip', createTrip);
 app.post('/newFlight', createFlight);
 app.post('/newTripFlight', createTripFlight);
 app.post("/newAttraction", createAttraction);
+app.post("/newTicket", createTicket);
 
 /* GET REQUESTS */
 app.get('/allTrips', getAllTrips);
 app.get('/allCountries', getAllCountries);
 app.get('/allFlights', getAllFlights);
+app.get('/allAttractions', getAllAttractions);
 app.get('/countriesEssencial', getCountriesEssencial);
 app.get('/allTripFlights', getAllTripFlights);
 app.post('/monthlyFlightReportByYear', getMonthlyFlightReportByYear);
 app.get('/getTripInfo', getTripInfo);
+app.get('/getAttracInfo', getAttractionInfo);
+app.get('/getAttracTickets', getAttractionTickets);
 
 /* DELETE REQUESTS */
 app.post('/deleteTripFlight', deleteTripFlight);
+app.post("/deleteTicket", deleteTicket);
 
 /* PUT REQUESTS */
 app.post('/updateTripFlight', updateTripFlight);
+app.post("/updateTicket", updateTicket);
+app.post("/updateAttraction", updateAttractions);
 
 app.listen(PORT);
 console.log("Server listening on port " + PORT + "!");
@@ -222,6 +229,65 @@ async function createAttraction(req, res) {
   }
 }
 
+async function createTicket(req, res) {
+  try {
+    // Get data from the request body
+    const id = req.body.id;
+    const name = req.body.name;
+    const number = req.body.number;
+
+    // Add tickets for the attraction to the database
+    await db.createTicket(id, name, number);
+
+    res.json(true);
+  } catch (e) {
+    error(res, e);
+  }
+}
+
+async function updateTicket(req, res) {
+  try {
+    // Get data from the request body
+    const id = req.body.id;
+    const name = req.body.name;
+    const number = req.body.number;
+
+    const result = await db.updateTicket(id, name, number);
+    res.json(result);
+  } catch (e) {
+    error(res, e);
+  }
+}
+
+async function updateAttractions(req, res) {
+  try {
+    // Get data from the request body
+    const id = req.body.id;
+    const name = req.body.name;
+    const imageSrc = req.body.imageSrc;
+    const hasTickets = req.body.hasTickets ? 1 : 0;
+    const noTicketPrice = req.body.noTicketPrice;
+    const lat = req.body.lat;
+    const lng = req.body.lng;
+    const codcountry = req.body.country;
+
+    const result = await db.updateAttraction(id, codcountry, name, hasTickets, noTicketPrice, imageSrc, lat, lng);
+    res.json(result);
+  } catch (e) {
+    error(res, e);
+  }
+}
+
+async function deleteTicket(req, res) {
+  try {
+    const id = req.body.id;
+    const result = await db.deleteTicket(id);
+    res.json(result);
+  } catch (e) {
+    error(res, e);
+  }
+}
+
 async function getAllTrips(req, res) {
   try {
     const trips = await db.getAllTrips();
@@ -236,6 +302,28 @@ async function getTripInfo(req, res) {
   try {
     const id = req.query.id;
     const info = await db.getTripInfo(id);
+    res.json(JSON.stringify(info));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAttractionInfo(req, res) {
+  try {
+    const id = req.query.id;
+    const info = await db.getAttracInfo(id);
+    res.json(JSON.stringify(info));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAttractionTickets(req, res) {
+  try {
+    const id = req.query.id;
+    const info = await db.getAttracTickets(id);
     res.json(JSON.stringify(info));
   }
   catch (e) {
@@ -268,6 +356,16 @@ async function getAllFlights(req, res) {
   try {
     const flights = await db.getAllFlights();
     res.json(JSON.stringify(flights));
+  }
+  catch (e) {
+    error(res, e);
+  }
+}
+
+async function getAllAttractions(req, res) {
+  try {
+    const attractions = await db.getAllAttractions();
+    res.json(JSON.stringify(attractions));
   }
   catch (e) {
     error(res, e);
