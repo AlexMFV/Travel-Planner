@@ -280,8 +280,9 @@ async function loadTripInfo(){
 
     await getAllFlights();
     await getAllTripFlights(id);
+    await getAllAttractions(); //This should only return the attractions of countries in the trip (filter all the countries based on the flights)
+    //await getAllTripAttractions(id);
     //await getAllRestaurants();
-    //await getAllAttractions();
     
     //await getTripFlights();
 
@@ -296,6 +297,15 @@ async function loadTripInfo(){
 
     glob.tripFlights.forEach(flight => {
         createFlightElement(flight);
+    });
+
+    glob.attractions.forEach(attrac => {
+        appendItems('attracsToAdd',
+        '<li id="' + attrac.id + '" class="list-group-item d-flex align-items-center">' +
+        '<i class="bx bxs-joystick" style="padding-right: 10px;"></i>' +
+        attrac.name + ' (' + attrac.country_name + ')' +
+        //'<i class="fa-solid fa-earth-americas" style="padding-left: 20px"></i>' +
+        '</li>');
     });
 }
 

@@ -1,6 +1,11 @@
 Urgent features:
 - Add Nodemon to the hosted website, this way when a file is changed, the server will restart automatically.
 
+Currently working on:
+- Inside the trip planner:
+    - If there are no flights, then show all the attractions
+    - Otherwise get all the attractions for the countries of the trip, this will include Source and Destination countries
+
 Soon features:
 - Inside the add new flight page:
     - Add a button in the middle allowing the user to change "from" and "to" flight

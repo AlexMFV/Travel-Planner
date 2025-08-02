@@ -191,60 +191,120 @@
                   <div class="col-md mb-4 mb-md-0" style="padding-bottom: 20px">
 
                     <div class="accordion mt-3" id="accordionExample">
+                      <!--? Flights Start-->
                       <div class="card accordion-item active">
                         <h2 class="accordion-header" id="headingOne">
                           <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
                             Flights
                           </button>
                         </h2>  
-                        <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="overflow:hidden;">
+                        <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample"
+                          style="overflow:hidden;">
                           <div class="accordion-body">
-
+                        
                             <div class="row">
-                            <div class="col-md-6" style="padding-bottom: 20px;">
-                              <small class="text-muted">Available flights</small>
-                              <div class="demo-inline-spacing mt-3">
-                                <ul id="flightsToAdd" class="list-group customScroll hoverable">
-                                  <!--! Flights loaded from DB go here -->         
-                                </ul>
+                              <div class="col-md-6" style="padding-bottom: 20px;">
+                                <small class="text-muted">Available flights</small>
+                                <div class="demo-inline-spacing mt-3">
+                                  <ul id="flightsToAdd" class="list-group customScroll hoverable">
+                                    <!--! Flights loaded from DB go here -->
+                                  </ul>
+                                </div>
+                              </div>
+                        
+                              <div class="col-md-6" style="padding-bottom: 20px;">
+                                <small class="text-muted">Flights added</small>
+                                <div class="demo-inline-spacing mt-3">
+                                  <ul id="selectedFlights" class="list-group customScroll">
+                                    <!--! Flights added go here, to then be saved to the database along the rest of the data -->
+                                  </ul>
+                                </div>
                               </div>
                             </div>
-
-                            <div class="col-md-6" style="padding-bottom: 20px;">
-                              <small class="text-muted">Flights added</small>
-                              <div class="demo-inline-spacing mt-3">
-                                <ul id="selectedFlights" class="list-group customScroll">
-                                  <!--! Flights added go here, to then be saved to the database along the rest of the data -->
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-
+                        
                           </div>
                         </div>
                       </div>
+                      <!--? Flights End -->
 
+                      <!--? Accomodation Start -->
                       <div class="card accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
                           <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">
-                            Attractions
+                            Accomodation
                           </button>
                         </h2>
                         <div id="accordionTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample" style="overflow:hidden;">
                           <div class="accordion-body">
-                            Dessert ice cream donut oat cake jelly-o pie sugar plum cheesecake. Bear claw dragée oat cake
-                            dragée ice cream halvah tootsie roll. Danish cake oat cake pie macaroon tart donut gummies.
-                            Jelly beans candy canes carrot cake. Fruitcake chocolate chupa chups.
+                            
+                            <div class="row">
+                              <div class="col-md-6" style="padding-bottom: 20px;">
+                                <small class="text-muted">Available accomodations</small>
+                                <div class="demo-inline-spacing mt-3">
+                                  <ul id="accomsToAdd" class="list-group customScroll hoverable">
+                                    <!--! Accomodations loaded from DB go here -->
+                                  </ul>
+                                </div>
+                              </div>
+                        
+                              <div class="col-md-6" style="padding-bottom: 20px;">
+                                <small class="text-muted">Accomodations added</small>
+                                <div class="demo-inline-spacing mt-3">
+                                  <ul id="selectedAccoms" class="list-group customScroll">
+                                    <!--! Accomodations added go here, to then be saved to the database along the rest of the data -->
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+
                           </div>
                         </div>
                       </div>
+                      <!--? Accomodation End -->
+                      
+                      <!--? Attractions Start --> 
                       <div class="card accordion-item">
                         <h2 class="accordion-header" id="headingThree">
                           <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionThree" aria-expanded="false" aria-controls="accordionThree">
-                            Restaurants
+                            Attractions
                           </button>
                         </h2>
                         <div id="accordionThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample" style="overflow:hidden;">
+                          <div class="accordion-body">
+                            
+                            <div class="row">
+                              <div class="col-md-6" style="padding-bottom: 20px;">
+                                <small class="text-muted">Available attractions</small>
+                                <div class="demo-inline-spacing mt-3">
+                                  <ul id="attracsToAdd" class="list-group customScroll hoverable">
+                                    <!--! Attractions loaded from DB go here -->
+                                  </ul>
+                                </div>
+                              </div>
+                        
+                              <div class="col-md-6" style="padding-bottom: 20px;">
+                                <small class="text-muted">Attractions added</small>
+                                <div class="demo-inline-spacing mt-3">
+                                  <ul id="selectedAttracs" class="list-group customScroll">
+                                    <!--! Attractions added go here, to then be saved to the database along the rest of the data -->
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <!--? Attractions End -->
+
+                      <!--? Restaurant Start-->
+                      <div class="card accordion-item">
+                        <h2 class="accordion-header" id="headingFour">
+                          <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionFour" aria-expanded="false" aria-controls="accordionFour">
+                            Restaurants
+                          </button>
+                        </h2>
+                        <div id="accordionFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample" style="overflow:hidden;">
                           <div class="accordion-body">
                             Oat cake toffee chocolate bar jujubes. Marshmallow brownie lemon drops cheesecake. Bonbon
                             gingerbread marshmallow sweet jelly beans muffin. Sweet roll bear claw candy canes oat cake
@@ -252,6 +312,7 @@
                           </div>
                         </div>
                       </div>
+                      <!--? Restaurant End -->
                     </div>
                   </div>
                   <!--! Accordions End -->
